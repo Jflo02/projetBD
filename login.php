@@ -1,13 +1,8 @@
 <?php
 session_start(); //pour demarrer la session
 
-// si l utilisateur clique sur se deconnecter alors on detruit la session et on efface la varible $_SESSION
-if (isset($_GET['logout'])) {
-    if ($_GET['logout'] == "1") {
-        session_destroy();
-        unset($_SESSION);
-    }
-}
+
+
 
 if (isset($_POST['mdp_user'])) {
     //ici on se connecte a la base sql

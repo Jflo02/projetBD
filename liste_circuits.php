@@ -22,7 +22,7 @@
     <table border=1>
         <tr>
             <th><a href="./">Acceuil</a></th>
-            <th><a href="./">Circuits</a></th>
+            <th><a href="./liste_circuits.php">Circuits</a></th>
         </tr>
     </table>
 
@@ -41,26 +41,32 @@
         <table border=1>
             <tr>
                 <td>Nom du circuit</td>
-                <td>Description</td>
                 <td>Depart</td>
-                <td>Arrivée</td>
+                <td>Durée</td>
             </tr>
 
             <?php
-            while (sqlsrv_fetch_array($stmt)) {
+
+            while ($row = sqlsrv_fetch_array($stmt)) {
+                $str_date = $row['Date_Depart']->format('Y-m-d');
                 echo '<tr>';
-            }
+                echo '<td>' . $row['Descriptif_Circuit'] . '</td>';
+                echo '<td>' . $str_date . '</td>';
+                echo '<td>' . $row['Duree_Circuit'] . '</td>';
+
+                if (isset($_SESSION['type'])) {
+                    if ($_SESSION['type'] == "Administrateur") {
+                        echo '<td>' ?> <a href="">Editer</a> <?php '</td>';
+                                                    }
+                                                }
+                                                echo '</tr>';
+                                            }
 
 
-            ?>
+                                                        ?>
         </table>
 
-        <div id="explications">
-            <p>
-                Bienvenue sur la liste des circuits
-            </p>
 
-        </div>
 
     </div>
     <!--On ferme le div du corps -->
