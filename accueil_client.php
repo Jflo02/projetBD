@@ -8,7 +8,7 @@ $conn = sqlsrv_connect($serverName, $connectionInfo);
 if ($conn) {
     echo 'connection réussie<br>';
 }
-
+//coucou
 //A SUPPRIMER QUAND ON AURA LES SESSIONS
 $_SESSION['prenom_user'] = 'Flo';
 echo 'Bonjour ' . $_SESSION['prenom_user'] . ' voici la liste des circuits actuellement proposés<br>';
