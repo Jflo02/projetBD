@@ -11,41 +11,38 @@ if (isset($_GET['logout'])) {
 
 if (isset($_POST['mdp_user'])) {
     //ici on se connecte a la base sql
-    $serverName = "LAPTOP-KDJMM0LM\SQLEXPRESS";
-    $connectionInfo = array("Database" => "ProjetBD");
-    $conn = sqlsrv_connect($serverName, $connectionInfo);
-    if ($conn) {
-        echo 'connection réussie<br>';
-    }
+    include("../connection_database.php");
 
 
-    $sql ='SELECT * from dbo.Administrateur inner join dbo.Personne ON dbo.Administrateur.Id_Personne=dbo.Personne.Id_Personne where Mot_De_Passe_Administrateur=\''. $_POST["mdp_user"] .'\' and Nom=\''.$_POST["nom_user"].'\'';
-    $resultat = sqlsrv_query($conn, $sql);                                                                                     
+    $sql = 'SELECT * from Personne where Personne_Mail=\'' . $_POST["mail_user"] . '\' and Personne_MDP=\'' . $_POST["mdp_user"] . '\'';
+    $resultat = sqlsrv_query($conn, $sql);
     if ($resultat == FALSE) {
         die("<br>Echec d'execution de la requete : " . $sql);
     } else {
         if (sqlsrv_has_rows($resultat) == 1) {
-            $row = sqlsrv_fetch_array($resultat);
-            $_SESSION['id_user'] = $row['Id_Personne'];
-            $_SESSION['nom_user'] = $row['Nom'];
-            $_SESSION['prenom_user'] = $row['Prenom'];
-            // $_SESSION['mail_user'] = $row['mail_prof'];
-            $_SESSION['type'] = "Administrateur";
-        }
-    }
 
-    $sql ='SELECT * from dbo.Client inner join dbo.Personne ON dbo.Client.Id_Personne=dbo.Personne.Id_Personne where Mot_De_Passe_Client=\''. $_POST["mdp_user"] .'\' and Nom=\''.$_POST["nom_user"].'\'';
-    $resultat = sqlsrv_query($conn, $sql);                                                                                     
-    if ($resultat == FALSE) {
-        die("<br>Echec d'execution de la requete : " . $sql);
-    } else {
-        if (sqlsrv_has_rows($resultat) == 1) {
             $row = sqlsrv_fetch_array($resultat);
             $_SESSION['id_user'] = $row['Id_Personne'];
             $_SESSION['nom_user'] = $row['Nom'];
             $_SESSION['prenom_user'] = $row['Prenom'];
+
+            //on regarde si la personne est administrateur
+            $sql = 'SELECT * FROM Administrateur where Id_Personne ='. $_SESSION['id_user'];
+            $stmt = sqlsrv_query($conn, $sql);
+            $is_lignes = sqlsrv_has_rows($stmt);
+            if ($stmt) {//si la requete est bien effectué
+                if ($is_lignes){//si id_personne est ds administrateur
+                    $_SESSION['type'] = "Administrateur";
+
+                }else {
+                    $_SESSION['type'] = "Client";
+                }
+            }
+
             // $_SESSION['mail_user'] = $row['mail_prof'];
-            $_SESSION['type'] = "Client";
+            
+            
+
         }
     }
 }
@@ -59,22 +56,33 @@ if (isset($_POST['mdp_user'])) {
 <head>
     <meta http-equiv="Expires" content="0">
 </head>
+
 <body>
-<?php
+    <?php
     if (isset($_SESSION['type'])) {
 
-        echo 'Hello ' . (($_SESSION['type'] == "Administrateur") ? "Administrateur" : "client") . $_SESSION['nom_user'] . ' ' . $_SESSION['prenom_user'];
+        echo 'Hello ' . (($_SESSION['type'] == "Administrateur") ? "Administrateur " : "client ") . $_SESSION['nom_user'] . ' ' . $_SESSION['prenom_user'];
         echo '<br><a href="./login.php?logout=1">Se deconnecter</a><br><br>';
+        echo '<br><a href="./">Aller à l\'acceuil</a><br><br>';
+
+    
     }
 
-    ?>
-<form action="./login.php" method="post">
-    <label for="nom">Nom:</label>
-    <input type="text" id="nom_user" name="nom_user"><br><br>
-    <label for="password">Mot de passe :</label>
-    <input type="password" id="mdp_user" name="mdp_user"><br><br>
-    <input type="submit" value="Envoyer">
 
-</form>
+    if (!isset($_SESSION['id_user'])){
+    ?>
+    <form action="./login.php" method="post">
+        <label for="nom">Mail :</label>
+        <input type="text" id="mail_user" name="mail_user"><br><br>
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="mdp_user" name="mdp_user"><br><br>
+        <input type="submit" value="Envoyer">
+
+    </form>
+
+    <?php
+    }
+    ?>
 </body>
+
 </html>
