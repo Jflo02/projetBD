@@ -2,13 +2,7 @@
 session_start(); //pour demarrer la session
 
 //ici on se connecte a la base sql
-$serverName = "DESKTOP-GUBKKB7";
-$connectionInfo = array("Database" => "ProjetBD");
-$conn = sqlsrv_connect($serverName, $connectionInfo);
-if ($conn) {
-    echo 'connection réussie<br>';
-}
-//coucou ici
+include("../connection_database.php");
 //A SUPPRIMER QUAND ON AURA LES SESSIONS
 $_SESSION['prenom_user'] = 'Flo';
 echo 'Bonjour ' . $_SESSION['prenom_user'] . ' voici la liste des circuits actuellement proposés<br>';
