@@ -7,14 +7,8 @@
 
 <body>
 <?php
-if (isset($_POST['mdp_user'])) {
-    //ici on se connecte a la base sql
-    $serverName = "LAPTOP-KDJMM0LM\SQLEXPRESS";
-    $connectionInfo = array("Database" => "ProjetBD");
-    $conn = sqlsrv_connect($serverName, $connectionInfo);
-    if ($conn) {
-        echo 'connection réussie<br>';
-    }
+    include("../connection_database.php");
+
 
     echo 'Si tu veux créer un compte c est bien ici';
 
@@ -31,8 +25,8 @@ if (isset($_POST['mdp_user'])) {
                     die("Il manque une valeur pour " . $key);
                 }
             }
-            $sql = "INSERT INTO etudiants (nom_etu, prenom_etu, mail_etu, mdp_etu) values ('" . $_GET['nom_etu'] . "','" . $_GET['prenom_etu'] . "','" . $_GET['mail_etu'] . "','" . $_GET['pwd_etu'] . "')";
-            $resultat = mysqli_query($conn, $sql);
+            $sql = "INSERT INTO Personne (Id_Personne ,Nom, Prenom, Date_Naissance, Personne_MDP, Personne_Mail) values ('" . $_GET['Id_Personne'] . "','" . $_GET['nom_cli'] . "','" . $_GET['prenom_cli'] . "','" . $_GET['Date_naissance'] . "','" . $_GET['pwd_etu'] . "','" . $_GET['Personne_Mail'] . "')";
+            $resultat = sqlsrv_query($conn, $sql);
             if ($resultat == FALSE) {
                 die("<br>Echec d'execution de la requete : " . $sql);
             } else {
@@ -42,18 +36,25 @@ if (isset($_POST['mdp_user'])) {
         
         default:
         ?>
-        <form action="./Créeation_De_Compte.php" method="post">
-            <label for="nom">nom :</label>
+        <form action="./Creation_De_Compte.php" method="get">
+            <label for="nom">nom:</label>
             <input type="text" id="nom_cli" name="nom_cli"><br><br>
         
-            <label for="prenom">prenom :</label>
+            <label for="prenom">prenom:</label>
             <input type="text" id="prenom_cli" name="prenom_cli"><br><br>
-        
-            <label for="nom">login :</label>
-            <input type="text" id="login_cli" name="login_cli"><br><br>
+
+            <label for="Date_Naissance">Date_Naissance:</label>
+            <input type="text" id="Date_naissance" name="Date_naissance"><br><br>
         
             <label for="password">Mot de passe :</label>
             <input type="password" id="mdp_cli" name="mdp_cli"><br><br>
+
+            <label for="Personne_Mail">Mail:</label>
+            <input type="text" id="Personne_Mail" name="Personne_Mail"><br><br>
+
+            <label for="Id_Personne">Id:</label>
+            <input type="text" id="Id_Personne" name="Id_Personne"><br><br>
+
             <input type="hidden" name="c" value="add">
             <input type="submit" value="Envoyer">
         </form>
