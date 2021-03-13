@@ -20,7 +20,7 @@ if (isset($_GET['logout'])) {
         if (!isset($_SESSION['id_user'])){
             echo '<a href="./login.php">Se connecter</a>';
             echo '<br>';
-            echo '<a href="">S\'inscrire</a>';
+            echo '<a href="./Creation_De_Compte.php?c=test">S\'inscrire</a>';
         }else{
 
         echo 'Connecté en tant que :'.$_SESSION['prenom_user'];

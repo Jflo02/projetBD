@@ -3,16 +3,17 @@
 
 <head>
     <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-<?php
+    <?php
     include("../connection_database.php");
 
+    //on met l'en-tete
+    include("./en-tete.php");
 
-    echo 'Si tu veux créer un compte c est bien ici';
 
-    
     if (!isset($_GET['c'])) {
         die();
     }
@@ -25,44 +26,49 @@
                     die("Il manque une valeur pour " . $key);
                 }
             }
-            $sql = "INSERT INTO Personne (Id_Personne ,Nom, Prenom, Date_Naissance, Personne_MDP, Personne_Mail) values ('" . $_GET['Id_Personne'] . "','" . $_GET['nom_cli'] . "','" . $_GET['prenom_cli'] . "','" . $_GET['Date_naissance'] . "','" . $_GET['pwd_etu'] . "','" . $_GET['Personne_Mail'] . "')";
+            $sql = "INSERT INTO Personne (Id_Personne ,Nom, Prenom, Date_Naissance, Personne_MDP, Personne_Mail) values
+            ('" . $_GET['Id_Personne'] . "','" . $_GET['nom_pers'] . "','" . $_GET['prenom_pers'] . "','" . $_GET['DN_pers'] . "','" . $_GET['mdp_pers'] . "','" . $_GET['mail_pers'] . "')";
             $resultat = sqlsrv_query($conn, $sql);
             if ($resultat == FALSE) {
                 die("<br>Echec d'execution de la requete : " . $sql);
             } else {
-                echo "Ajout OK !";
+                echo "Votre compte a été créé, vous pouvez maintenant vous connecter";
+                $sql = "INSERT INTO Client (Id_Personne) values
+            ('" . $_GET['Id_Personne']. "')";
+                $resultat = sqlsrv_query($conn, $sql);
             }
             break;
-        
+
         default:
-        ?>
-        <form action="./Creation_De_Compte.php" method="get">
-            <label for="nom">nom:</label>
-            <input type="text" id="nom_cli" name="nom_cli"><br><br>
-        
-            <label for="prenom">prenom:</label>
-            <input type="text" id="prenom_cli" name="prenom_cli"><br><br>
+    ?>
+            <form action="./Creation_De_Compte.php" method="get">
+                <label for="nom">Nom:</label>
+                <input type="text" id="nom_pers" name="nom_pers"><br><br>
 
-            <label for="Date_Naissance">Date_Naissance:</label>
-            <input type="text" id="Date_naissance" name="Date_naissance"><br><br>
-        
-            <label for="password">Mot de passe :</label>
-            <input type="password" id="mdp_cli" name="mdp_cli"><br><br>
+                <label for="prenom">Prenom:</label>
+                <input type="text" id="prenom_pers" name="prenom_pers"><br><br>
 
-            <label for="Personne_Mail">Mail:</label>
-            <input type="text" id="Personne_Mail" name="Personne_Mail"><br><br>
+                <label for="Date_Naissance">Date_Naissance:</label>
+                <input type="date" id="DN_pers" name="DN_pers"><br><br>
 
-            <label for="Id_Personne">Id:</label>
-            <input type="text" id="Id_Personne" name="Id_Personne"><br><br>
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="mdp_pers" name="mdp_pers"><br><br>
 
-            <input type="hidden" name="c" value="add">
-            <input type="submit" value="Envoyer">
-        </form>
-        <?php
+                <label for="Personne_Mail">Mail:</label>
+                <input type="text" id="mail_pers" name="mail_pers"><br><br>
+
+                <label for="Id_Personne">Id:</label>
+                <input type="text" id="Id_Personne" name="Id_Personne"><br><br>
+
+                <input type="hidden" name="c" value="add">
+                <input type="submit" value="Envoyer">
+            </form>
+    <?php
             break;
-}
-?>
+    }
+    ?>
 
 
 </body>
+
 </html>

@@ -1,5 +1,19 @@
-<?php
-session_start(); //pour demarrer la session
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+
+    <?php
+    //on met l'en-tete
+    include("./en-tete.php");
+
+
 
 
 
@@ -7,6 +21,8 @@ session_start(); //pour demarrer la session
 if (isset($_POST['mdp_user'])) {
     //ici on se connecte a la base sql
     include("../connection_database.php");
+
+    
 
 
     $sql = 'SELECT * from Personne where Personne_Mail=\'' . $_POST["mail_user"] . '\' and Personne_MDP=\'' . $_POST["mdp_user"] . '\'';
@@ -22,58 +38,46 @@ if (isset($_POST['mdp_user'])) {
             $_SESSION['prenom_user'] = $row['Prenom'];
 
             //on regarde si la personne est administrateur
-            $sql = 'SELECT * FROM Administrateur where Id_Personne ='. $_SESSION['id_user'];
+            $sql = 'SELECT * FROM Administrateur where Id_Personne =' . $_SESSION['id_user'];
             $stmt = sqlsrv_query($conn, $sql);
             $is_lignes = sqlsrv_has_rows($stmt);
-            if ($stmt) {//si la requete est bien effectué
-                if ($is_lignes){//si id_personne est ds administrateur
+            if ($stmt) { //si la requete est bien effectué
+                if ($is_lignes) { //si id_personne est ds administrateur
                     $_SESSION['type'] = "Administrateur";
-
-                }else {
+                } else {
                     $_SESSION['type'] = "Client";
                 }
             }
 
-            // $_SESSION['mail_user'] = $row['mail_prof'];
-            
-            
+
 
         }
     }
 }
 
 
-?>
 
-<!DOCTYPE html>
-<html>
 
-<head>
-    <meta http-equiv="Expires" content="0">
-</head>
 
-<body>
-    <?php
+
     if (isset($_SESSION['type'])) {
 
         echo 'Hello ' . (($_SESSION['type'] == "Administrateur") ? "Administrateur " : "client ") . $_SESSION['nom_user'] . ' ' . $_SESSION['prenom_user'];
         echo '<br><a href="./login.php?logout=1">Se deconnecter</a><br><br>';
         echo '<br><a href="./">Aller à l\'acceuil</a><br><br>';
-
-    
     }
 
 
-    if (!isset($_SESSION['id_user'])){
+    if (!isset($_SESSION['id_user'])) {
     ?>
-    <form action="./login.php" method="post">
-        <label for="nom">Mail :</label>
-        <input type="text" id="mail_user" name="mail_user"><br><br>
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="mdp_user" name="mdp_user"><br><br>
-        <input type="submit" value="Envoyer">
+        <form action="./login.php" method="post">
+            <label for="nom">Mail :</label>
+            <input type="text" id="mail_user" name="mail_user"><br><br>
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="mdp_user" name="mdp_user"><br><br>
+            <input type="submit" value="Envoyer">
 
-    </form>
+        </form>
 
     <?php
     }
