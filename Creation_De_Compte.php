@@ -26,15 +26,21 @@
                     die("Il manque une valeur pour " . $key);
                 }
             }
+
+            $max_id = "SELECT MAX(Id_Personne) FROM Personne";
+            $max_id_result = sqlsrv_query($conn, $max_id);
+            $max_id=sqlsrv_fetch_array($max_id_result);
+            $max_id = $max_id[0] + 1;
+
             $sql = "INSERT INTO Personne (Id_Personne ,Nom, Prenom, Date_Naissance, Personne_MDP, Personne_Mail) values
-            ('" . $_GET['Id_Personne'] . "','" . $_GET['nom_pers'] . "','" . $_GET['prenom_pers'] . "','" . $_GET['DN_pers'] . "','" . $_GET['mdp_pers'] . "','" . $_GET['mail_pers'] . "')";
+            ('" . $max_id . "','" . $_GET['nom_pers'] . "','" . $_GET['prenom_pers'] . "','" . $_GET['DN_pers'] . "','" . $_GET['mdp_pers'] . "','" . $_GET['mail_pers'] . "')";
             $resultat = sqlsrv_query($conn, $sql);
             if ($resultat == FALSE) {
                 die("<br>Echec d'execution de la requete : " . $sql);
             } else {
                 echo "Votre compte a été créé, vous pouvez maintenant vous connecter";
                 $sql = "INSERT INTO Client (Id_Personne) values
-            ('" . $_GET['Id_Personne']. "')";
+            ('" . $max_id. "')";
                 $resultat = sqlsrv_query($conn, $sql);
             }
             break;
@@ -56,10 +62,10 @@
 
                 <label for="Personne_Mail">Mail:</label>
                 <input type="text" id="mail_pers" name="mail_pers"><br><br>
-
+<!--
                 <label for="Id_Personne">Id:</label>
                 <input type="text" id="Id_Personne" name="Id_Personne"><br><br>
-
+-->
                 <input type="hidden" name="c" value="add">
                 <input type="submit" value="Envoyer">
             </form>
