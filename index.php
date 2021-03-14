@@ -21,7 +21,7 @@
     <table border=1>
         <tr>
         <th><a href="./">Acceuil</a></th>
-        <th><a href="./liste_circuits.php">Circuits</a></th>
+        <th><a href="./liste_circuits.php?c=test">Circuits</a></th>
         </tr>
     </table>
 
