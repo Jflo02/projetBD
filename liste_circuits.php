@@ -44,12 +44,25 @@
                 <input type="nombre" id="Nbr_Place_Reservation" name="Nbr_Place_Reservation"><br><br>
 
 
-                <input type="hidden" name="c" value="add">
+                <input type="hidden" name="c" value="passa">
+                <input type="hidden" name="id" value="passa">
                 <input type="submit" value="Envoyer">
             </form>
 
         <?php
                 
+                break;
+            case 'passa':
+                $passa='Nbr_Place_Reservation';
+                if ($passa=0){
+                    echo "lalalalal";                    
+                }
+                //sinon mettre un questionnaire tant que passa>=nrb_place alors mettre un questionnaire
+                
+
+
+
+
                 break;
             
 
@@ -101,7 +114,7 @@
                     echo '<td>' . $str_date . '</td>';
                     echo '<td>' . $row['Duree_Circuit'] . '</td>';
                     echo '<td>' . $row['Nbr_Place_Totale'] . '</td>';
-                    echo "<td><a href=./liste_circuits.php?c=res>réserver</a></td>";
+                    echo '<td><a href=./liste_circuits.php?c=res&id='.$row['Id_Circuit'].'>réserver</a></td>';
 
                     if (isset($_SESSION['type'])) {
                         if ($_SESSION['type'] == "Administrateur") {
