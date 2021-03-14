@@ -51,6 +51,7 @@
         <?php
                 
                 break;
+            
 
 
             case 'add':
@@ -63,7 +64,7 @@
                 $Date_Reservation=date('d.m.y');
 
                 $sql = "INSERT INTO Réservation (Id_Reservation ,Date_Reservation, Id_Personne, Id_Circuit, Nbr_Place_Reservation) values
-                ('" . $max_id . "','" . $Date_Reservation . "','" . $_GET['Id_Personne'] . "','" . $_GET['Id_Circuit'] . "','" . $_GET['Nbr_Place_Reservation'] . "')";
+                ('" . $max_id . "','" . $Date_Reservation . "','" . $_SESSION['id_user'] . "','" . $_GET['Id_Circuit'] . "','" . $_GET['Nbr_Place_Reservation'] . "')";
                 $resultat = sqlsrv_query($conn, $sql);
                 if ($resultat == FALSE) {
                     die("<br>Echec d'execution de la requete : " . $sql);
@@ -83,6 +84,7 @@
             ?>
             <table border=1>
                 <tr>
+                    <td>Numéro du circuit</td>
                     <td>Nom du circuit</td>
                     <td>Depart</td>
                     <td>Durée</td>
@@ -94,11 +96,12 @@
                 while ($row = sqlsrv_fetch_array($stmt)) {
                     $str_date = $row['Date_Depart']->format('Y-m-d');
                     echo '<tr>';
+                    echo '<td>' . $row['Id_Circuit'] . '</td>';
                     echo '<td>' . $row['Descriptif_Circuit'] . '</td>';
                     echo '<td>' . $str_date . '</td>';
                     echo '<td>' . $row['Duree_Circuit'] . '</td>';
                     echo '<td>' . $row['Nbr_Place_Totale'] . '</td>';
-                    echo "<td><a href=./liste_circuits.php?c=res" . $row['Id_Circuit'] . ">réserver</a></td>";
+                    echo "<td><a href=./liste_circuits.php?c=res>réserver</a></td>";
 
                     if (isset($_SESSION['type'])) {
                         if ($_SESSION['type'] == "Administrateur") {
