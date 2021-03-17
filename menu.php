@@ -22,7 +22,7 @@
                                     <br>
                                     <a href="./client.php?c=default">Client</a>
                                     <br>
-                                    <a href="#">Administrateur</a>
+                                    <a href="./administrateur.phpc=default">Administrateur</a>
                                 </div>
                             </li>
                         </ul>
