@@ -14,6 +14,17 @@
     include("./en-tete.php");
 
 
+    //on met le menu seulement si on est connecté et admin
+
+    if (isset($_SESSION['type'])) {
+        if ($_SESSION['type'] == "Administrateur") {
+        include("./menu.php");
+        }
+    }
+
+
+
+
     if (!isset($_GET['c'])) {
         die();
     }
@@ -29,7 +40,7 @@
 
             $max_id = "SELECT MAX(Id_Personne) FROM Personne";
             $max_id_result = sqlsrv_query($conn, $max_id);
-            $max_id=sqlsrv_fetch_array($max_id_result);
+            $max_id = sqlsrv_fetch_array($max_id_result);
             $max_id = $max_id[0] + 1;
 
             $sql = "INSERT INTO Personne (Id_Personne ,Nom, Prenom, Date_Naissance, Personne_MDP, Personne_Mail) values
@@ -38,10 +49,17 @@
             if ($resultat == FALSE) {
                 die("<br>Echec d'execution de la requete : " . $sql);
             } else {
-                echo "Votre compte a été créé, vous pouvez maintenant vous connecter";
+
                 $sql = "INSERT INTO Client (Id_Personne) values
-            ('" . $max_id. "')";
+            ('" . $max_id . "')";
                 $resultat = sqlsrv_query($conn, $sql);
+
+                if (!isset($_SESSION['id_user'])) {
+                    echo "Votre compte a été créé, vous pouvez maintenant vous connecter";
+                } elseif (($_SESSION['type']) == "Administrateur") {
+                    
+                    echo 'Le compte client a bien été créé.';
+                }
             }
             break;
 
@@ -62,7 +80,7 @@
 
                 <label for="Personne_Mail">Mail:</label>
                 <input type="text" id="mail_pers" name="mail_pers"><br><br>
-<!--
+                <!--
                 <label for="Id_Personne">Id:</label>
                 <input type="text" id="Id_Personne" name="Id_Personne"><br><br>
 -->
