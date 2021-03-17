@@ -38,14 +38,16 @@
             case 'res':
                 //je demande pour cb il veut réserver
     ?>
-                <form action="./liste_circuits.php" method="get">
+                <form action="./liste_circuits.php?id=" method="get">
 
-                <label for="number">Nombre de Réservation:</label>
+                <label for="number">Nombre de Passager:</label>
                 <input type="nombre" id="Nbr_Place_Reservation" name="Nbr_Place_Reservation"><br><br>
-
-
                 <input type="hidden" name="c" value="passa">
-                <input type="hidden" name="id" value="passa">
+    <?php
+                echo '<input type="hidden" name="id" value='.$_GET['id'].'>';
+    ?>
+    
+        
                 <input type="submit" value="Envoyer">
             </form>
 
@@ -53,15 +55,25 @@
                 
                 break;
             case 'passa':
-                $passa='Nbr_Place_Reservation';
-                if ($passa=0){
-                    echo "lalalalal";                    
+                $formulaire=1;
+                $passa=$_GET['Nbr_Place_Reservation'];
+                if ($passa==0){
+                    echo "Tu n'as pas de passager.";                    
+                } else {
+                    while ($passa>=$formulaire){
+    ?>
+                <form action="./liste_circuits.php?" method="get">
+
+                <label for="text">Prénom du passager :</label>
+                    <input type="text" id="prenom_passager" name="prenom_passager"><br><br>
+                    <input type="hidden" name="c" value="passager">
+                    
+
+    <?php
+                $formulaire++;
+                    }
                 }
                 //sinon mettre un questionnaire tant que passa>=nrb_place alors mettre un questionnaire
-                
-
-
-
 
                 break;
             
@@ -88,7 +100,7 @@
                 }
                 break;
     
-            default:
+                default:
                 echo '<br>';
                 $sql = 'select * FROM Circuit ';
                 $stmt = sqlsrv_query($conn, $sql);
@@ -107,7 +119,7 @@
                 <?php
 
                 while ($row = sqlsrv_fetch_array($stmt)) {
-                    $str_date = $row['Date_Depart']->format('Y-m-d');
+                    $str_date = $row['Date_Depart']->format('d-m-Y');
                     echo '<tr>';
                     echo '<td>' . $row['Id_Circuit'] . '</td>';
                     echo '<td>' . $row['Descriptif_Circuit'] . '</td>';
@@ -115,22 +127,19 @@
                     echo '<td>' . $row['Duree_Circuit'] . '</td>';
                     echo '<td>' . $row['Nbr_Place_Totale'] . '</td>';
                     echo '<td><a href=./liste_circuits.php?c=res&id='.$row['Id_Circuit'].'>réserver</a></td>';
-
-                    if (isset($_SESSION['type'])) {
-                        if ($_SESSION['type'] == "Administrateur") {
-                            echo '<td>' ?> <a href="">Editer</a> <?php '</td>';
+                    echo '<td><a href=./detail_circuit.php?id='.$row['Id_Circuit'].'>Voir</a></td>';
                                                         }
                                                     }
                                                     echo '</tr>';
-                                                }
 
 
-                                                ?>                                              
+
+                                                ?>
             </table>
             <?php
-        }
+
         ?>
-                                
+
 
 
     </div>
