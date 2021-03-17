@@ -17,6 +17,8 @@
     //on met l'en-tete
     include("./en-tete.php");
 
+    include("./menu.php");
+
     ?>
     <br>
     <?php
@@ -45,11 +47,14 @@
             echo '<td>' . $row['Duree_Etape'] . '</td>';
             if (isset($_SESSION['type'])) {
                 if ($_SESSION['type'] == "Administrateur") {
-                    echo '<td><a href=./modif_circuit.php?id='.$_GET['id'].'&ordre='.$row['Ordre_Etape'].'>Modifier</a></td>';
-                    echo '<td><a href=./suppr_circuit.php?id='.$_GET['id'].'&ordre='.$row['Ordre_Etape'].'>Supprimer</a></td>';
+                    echo '<td><a href=./modif_etape.php?id='.$_GET['id'].'&ordre='.$row['Ordre_Etape'].'>Modifier</a></td>';
+                    echo '<td><a href=./suppr_etape.php?id='.$_GET['id'].'&ordre='.$row['Ordre_Etape'].'>Supprimer</a></td>';
                                                 }}}
             echo '</tr>';
     
         ?>
     </table>
+    <?php echo '<a href=./ajout_etape.php?id_circuit='.$_GET['id'].'>Ajouter une étape</a>'; ?>
     <a href="./liste_circuits.php?c=test">Retour a la liste des circuits</a>
+    </body>
+    </html>
