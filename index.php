@@ -17,13 +17,11 @@
     //on met l'en-tete
     include("./en-tete.php");
 
+    //on include le menu
+    include("./menu.php")
+
     ?>
-    <table border=1>
-        <tr>
-        <th><a href="./">Acceuil</a></th>
-        <th><a href="./liste_circuits.php?c=test">Circuits</a></th>
-        </tr>
-    </table>
+    
 
 
    
