@@ -16,18 +16,9 @@
 
     //on met l'en-tete
     include("./en-tete.php");
-
+    include("./menu.php");
 
     ?>
-    <table border=1>
-        <tr>
-            <th><a href="./">Acceuil</a></th>
-            <th><a href="./liste_circuits.php">Circuits</a></th>
-        </tr>
-    </table>
-
-
-
 
     <div id="corps">
 
@@ -38,7 +29,7 @@
             case 'res':
                 //je demande pour cb il veut réserver
     ?>
-                <form action="./liste_circuits.php?id=" method="get">
+                <form action="./liste_circuits.php?" method="get">
 
                 <label for="number">Nombre de Passager:</label>
                 <input type="nombre" id="Nbr_Place_Reservation" name="Nbr_Place_Reservation"><br><br>
@@ -47,34 +38,50 @@
                 echo '<input type="hidden" name="id" value='.$_GET['id'].'>';
     ?>
     
-        
                 <input type="submit" value="Envoyer">
             </form>
 
         <?php
                 
                 break;
+
+
+
             case 'passa':
                 $formulaire=1;
                 $passa=$_GET['Nbr_Place_Reservation'];
                 if ($passa==0){
-                    echo "Tu n'as pas de passager.";                    
+                    echo "Tu n'as pas de passager. Tu peux continuer";
+                    echo '<form action="./liste_circuits.php?c=add&id='.$_GET['id'].'" method="get"><button type="submit">Continuer</button></form>';
+
                 } else {
                     while ($passa>=$formulaire){
     ?>
-                <form action="./liste_circuits.php?" method="get">
+                <form action="./liste_circuits.php" method="post">
 
-                <label for="text">Prénom du passager :</label>
+                <label for="text">Prénom du passager <?php echo $formulaire?> :</label>
                     <input type="text" id="prenom_passager" name="prenom_passager"><br><br>
-                    <input type="hidden" name="c" value="passager">
-                    
 
+                <label for="text">Nom du passager <?php echo $formulaire?> :</label>
+                    <input type="text" id="nom_passager" name="nom_passager"><br><br>
+              
+                <label for="text">Mail du passager <?php echo $formulaire?> :</label>
+                    <input type="text" id="mail_passager" name="mail_passager"><br><br>
+   
+                <label for="date">Date de Naissance du passager <?php echo $formulaire?> :</label>
+                    <input type="date" id="Naissance_passager" name="Naissance_passager"><br><br>
     <?php
                 $formulaire++;
                     }
+                
+    ?>
+                
+                <input type="hidden" name="c" value="add">
+                
+<?php
+                //echo '<input type="hidden" name="id" value="'.$_GET['id'].'">';
+                echo '<input type="submit" value="Continuer">';
                 }
-                //sinon mettre un questionnaire tant que passa>=nrb_place alors mettre un questionnaire
-
                 break;
             
 
@@ -89,7 +96,7 @@
                 $Date_Reservation=date('d.m.y');
 
                 $sql = "INSERT INTO Réservation (Id_Reservation ,Date_Reservation, Id_Personne, Id_Circuit, Nbr_Place_Reservation) values
-                ('" . $max_id . "','" . $Date_Reservation . "','" . $_SESSION['id_user'] . "','" . $_GET['Id_Circuit'] . "','" . $_GET['Nbr_Place_Reservation'] . "')";
+                ('" . $max_id . "','" . $Date_Reservation . "','" . $_SESSION['id_user'] . "','" . $_GET['id'] . "','" . $_GET['Nbr_Place_Reservation'] . "')";
                 $resultat = sqlsrv_query($conn, $sql);
                 if ($resultat == FALSE) {
                     die("<br>Echec d'execution de la requete : " . $sql);
