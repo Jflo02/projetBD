@@ -32,7 +32,7 @@
                 echo "Ajout OK !";
             }
             break;
-        
+        //test
 
         case 'read':
             $sql = 'SELECT * FROM lieu WHERE Nom_Lieu=\'' . $_GET['nom'].'\' and Ville_Lieu=\''. $_GET['ville'].'\' and Pays_Lieu=\''. $_GET['pays'].'\'';
