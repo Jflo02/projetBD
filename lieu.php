@@ -116,15 +116,17 @@
                     if ($resultat == FALSE) {
                         die("<br>Echec d'execution de la requete : " . $sql);
                     } else {
-                        if (sqlsrv_has_rows($resultat)){
-                        $row = sqlsrv_fetch_array($resultat);
-
-                        echo "Non le lieu est encore dans le circuit" . $row['Id_Circuit'];
-                        echo '<a href=./detail_circuit.php?id='.$row['Id_Circuit'].'>Vous pouvez aller dans le détail de ce circuit pour le supprimer</a>';
-                        } else {
+                        if ($resultat){
+                        $row = sqlsrv_has_rows($resultat);
+                            if ($row=== TRUE) {
+                                $row = sqlsrv_fetch_array($resultat);
+                                echo "Non le lieu est encore dans le circuit" . $row['Id_Circuit'];
+                                echo '<a href=./detail_circuit.php?id='.$row['Id_Circuit'].'>Vous pouvez aller dans le détail de ce circuit pour le supprimer</a>';
+                            } else {
                             $sql="DELETE FROM Lieu where Nom_Lieu='". $_GET['nom']."' and Ville_Lieu='".$_GET['ville']. "' and Pays_Lieu='". $_GET['pays'] . "'";
                             $resultat = sqlsrv_query($conn, $sql);
                             echo "c'est supprimé!";
+                            }
                         }
                     }
 
