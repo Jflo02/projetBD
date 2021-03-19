@@ -16,6 +16,7 @@ if (isset($_GET['logout'])) {
     </div>
 
     <div class=login>
+        <p>test login</p>
         <?php
         if (!isset($_SESSION['id_user'])){
             echo '<a href="./login.php">Se connecter</a>';

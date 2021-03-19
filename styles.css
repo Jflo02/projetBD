@@ -8,6 +8,7 @@
     border-color:blue;
 }
 
+
 .login{
     /*background-color : grey;*/
     display:flex;
@@ -29,10 +30,6 @@
 }
 */
 
-ul{
-    list-style-type: none;
-}
 
- li{
-    list-style: none;
-}
+
+

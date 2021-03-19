@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Gestion administrateurs</title>
+    <title>Gestion personnes</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -21,7 +21,6 @@
     include("./menu.php")
 
     ?>
-    
 
 
     <div id="corps">
@@ -44,7 +43,7 @@
                     while ($row = sqlsrv_fetch_array($stmt)) {
                         $str_date = $row['Date_Naissance']->format('Y-m-d');
         ?>
-                        <form action="./administrateur.php" method="get">
+                        <form action="./personne.php" method="get">
                             <label for="nom">Nom :</label>
                             <input type="text" id="nom_pers" name="nom_pers" value="<?php echo $row['Nom'] ?>"><br><br>
 
@@ -84,7 +83,7 @@
                     echo "Enregistrement mis à jour<br><br>";
                 }
 
-                echo '<a href="./administrateur.php?c=default">Retour à la liste des administrateurs</a>';
+                echo '<a href="./personne.php?c=default">Retour à la liste des personnes</a>';
 
                 break;
 
@@ -92,14 +91,14 @@
             
             case "delete":
 
-                $sql = 'DELETE FROM Administrateur WHERE Id_Personne=' . $_GET['id_pers'];;
+                $sql = 'DELETE FROM Personne WHERE Id_Personne=' . $_GET['id_pers'];;
                 $stmt = sqlsrv_query($conn, $sql);
                 
                 
                     if ($stmt == FALSE) {
-                        die("<br>Echec d'execution de la requete : " . $sql);
+                        die("<br>Echec d'execution de la requete , merci de supprimer la personne des clients et/ou administrateurs en premier. ");
                     } else {
-                        echo "Administrateur supprimé";
+                        echo "Personne supprimé";
                     }
 
                 break;
@@ -110,7 +109,7 @@
 
             case "default":
 
-                $sql = 'select * FROM Administrateur INNER JOIN Personne on Administrateur.Id_Personne = Personne.Id_Personne';
+                $sql = 'select * FROM  Personne';
                 $stmt = sqlsrv_query($conn, $sql);
                 //on fait un tableau avec une ligne par circuit avec ses infos
 
@@ -139,8 +138,8 @@
                         echo '<td>' . $row['Personne_Mail'] . '</td>';
 
 
-                        echo '<td>' . '<a href="./administrateur.php?c=read&id_pers=' . $row['Id_Personne'] . '"' . '>Editer</a> </td>';
-                        echo '<td>' . '<a href="./administrateur.php?c=delete&id_pers=' . $row['Id_Personne'] . '"' . '>Supprimer</a> </td>';
+                        echo '<td>' . '<a href="./personne.php?c=read&id_pers=' . $row['Id_Personne'] . '"' . '>Editer</a> </td>';
+                        echo '<td>' . '<a href="./personne.php?c=delete&id_pers=' . $row['Id_Personne'] . '"' . '>Supprimer</a> </td>';
                         echo '</tr>';
                     }
 
@@ -149,7 +148,6 @@
                 </table>
         <?php
 
-        echo '<br><a href="./Creation_De_Compte.php?c=admin">Créer un administrateur</a>';
 
                 break;
 
