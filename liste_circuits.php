@@ -57,7 +57,7 @@
                 } else {
                     while ($passa>=$formulaire){
     ?>
-                <form action="./liste_circuits.php" method="post">
+                <form action="./liste_circuits.php" method="get">
 
                 <label for="text">Prénom du passager <?php echo $formulaire?> :</label>
                     <input type="text" id="prenom_passager" name="prenom_passager"><br><br>
@@ -73,7 +73,8 @@
     <?php
                 $formulaire++;
                     }
-                
+                echo '<input type="hidden" name="id" value='.$_GET['id'].'>';
+                echo '<input type="hidden" name="Nbr_place" value='.$_GET['Nbr_Place_Reservation'].'>';
     ?>
                 
                 <input type="hidden" name="c" value="add">
@@ -95,16 +96,43 @@
                 //permet de définir la date de la réservation
                 $Date_Reservation=date('d.m.y');
 
-                $sql = "INSERT INTO Réservation (Id_Reservation ,Date_Reservation, Id_Personne, Id_Circuit, Nbr_Place_Reservation) values
-                ('" . $max_id . "','" . $Date_Reservation . "','" . $_SESSION['id_user'] . "','" . $_GET['id'] . "','" . $_GET['Nbr_Place_Reservation'] . "')";
+                $sql = "INSERT INTO Reservation (Id_Reservation ,Date_Reservation, Id_Personne, Id_Circuit, Nbr_Place_Reservation) values
+                ('" . $max_id . "','" . $Date_Reservation . "','" . $_SESSION['id_user'] . "','" . $_GET['id'] . "','" . $_GET['Nbr_place'] . "')";
                 $resultat = sqlsrv_query($conn, $sql);
                 if ($resultat == FALSE) {
                     die("<br>Echec d'execution de la requete : " . $sql);
                 } else {
                     echo "Votre Réservation a bien été prise en compte";
-                    // $nbr_place="SELECT Nbr_place_Totale from Circuit where Id_Circuit=. $_GET['Id_Circuit'] .";
-                    // $nbr_place_restante=$nbr_place- ". $_GET[Nombre_pers] .";
+                    //calcul de reservation en moins
+                    $nbr_place="SELECT Nbr_place_Totale from Circuit where Id_Circuit='". $_GET['id'] ."'";
+
+                    $nbr_place_restante=intval($nbr_place)-intval($_GET['Nbr_place']);
+                    
+                    $sql="UPDATE Circuit SET Nbr_Place_Totale='".$nbr_place_restante."' where Id_Circuit='". $_GET['id'] ."'";
+                    $resultat = sqlsrv_query($conn, $sql);
+
+
+                    //vérifie si elle se trouve dans la BD
+
+                    $sql= "SELECT Personne_Mail FROM Personne where Personne_Mail='". $_GET['mail_passager']. "'";
+                    $resultat = sqlsrv_query($conn, $sql);
+                    if ($resultat==false){
+                        die("<br>Echec d'execution de la requete : " . $sql);
+                    }
+                    else{
+                        if($resultat){
+                            $row = sqlsrv_has_rows($resultat);
+                            if ($row===TRUE) {
+                                $row = sqlsrv_fetch_array($resultat);
+                                echo "Réservation a bien été prise";
+                                $sql= "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('".$row['Id_Personne']."','". $max_id."','1','NULL') ";
+                            } else {
+                                echo "<br></br>";
+                                echo "le passager ".$_GET['prenom_passager']. " ". $_GET['nom_passager']. " n'est pas enregistré dans notre base de donnée" ;
+                        }       
+                    }
                 }
+            }
                 break;
     
                 default:
