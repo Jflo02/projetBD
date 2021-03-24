@@ -3,6 +3,8 @@
     <tr>
       <th><a href="./">Acceuil</a></th>
       <th><a href="./liste_circuits.php?c=default">Circuits</a></th>
+      <th><a href="./moncompte.php?c=default">Mon compte</a></th>
+                  <br>
 
 
       <?php
