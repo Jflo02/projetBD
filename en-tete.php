@@ -27,7 +27,7 @@ if (isset($_GET['logout'])) {
         echo 'Connecté en tant que :'.$_SESSION['prenom_user'];
         echo '<br>';
         echo  $_SESSION['type'];
-        echo '<br><a href="?logout=1">Se deconnecter</a><br><br>';
+        echo '<br><a href="./index.php?logout=1">Se deconnecter</a><br><br>';
         }
         ?>
     </div>
