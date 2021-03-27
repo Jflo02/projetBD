@@ -21,7 +21,7 @@
 
             <li><a href="#">Historique</a></li>
             <li><a href="#">Planning</a></li>
-            <li><a href="#">Mon compte</a></li>
+            <li><a href="./moncompte.php?c=default">Mon compte</a></li>
 
             <?php
             if ($_SESSION['type'] == "Administrateur") {
