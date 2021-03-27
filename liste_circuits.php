@@ -127,7 +127,11 @@
                                     echo "<br></br>";
                                     echo "Réservation a bien été prise";
                                     echo "<br></br>";
-                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $row['Id_Personne'] . "','" . $max_id . "','1','NULL') ";
+                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $_GET['id'] . "','" . $max_id . "','1',NULL) ";
+                                    $resultat = sqlsrv_query($conn, $sql);
+                                    if ($resultat == false) {
+                                        die("<br>Echec d'execution de la requete : " . $sql);
+                                    }
                                 } else {
                                     echo "<br></br>";
                                     $max_id = "SELECT MAX(Id_Personne) FROM Personne";
@@ -147,9 +151,14 @@
                                     $indicegetmail = 'mail_passager' . strval($i);
                                     $indicegetnaissance = 'Naissance_passager' . strval($i);
                                     echo "<br></br>";
-                                    echo "le passager " . $_GET[$indicegetprenom] . " " . $_GET["$indicegetnom"] . " n'est pas enregistré dans notre base de donnée, le mot de passe par défaut sera" . $mdp;
+                                    echo "le passager " . $_GET[$indicegetprenom] . " " . $_GET["$indicegetnom"] . " n'est pas enregistré dans notre base de donnée, le mot de passe par défaut sera " . $mdp;
                                     echo "<br></br>";
                                     $sql = "INSERT INTO Personne (Id_Personne, Nom, Prenom, Date_Naissance, Personne_MDP, Personne_Mail) values ('" . $max_id . "','" . $_GET[$indicegetprenom] . "','" . $_GET[$indicegetnom] . "','" . $_GET[$indicegetnaissance] . "','" . $mdp . "','" . $_GET[$indicegetmail] . "')";
+                                    $resultat = sqlsrv_query($conn, $sql);
+                                    if ($resultat == false) {
+                                        die("<br>Echec d'execution de la requete : " . $sql);
+                                    }
+                                    $sql = "INSERT INTO Passager (Id_Personne) values ('" . $max_id . "')";
                                     $resultat = sqlsrv_query($conn, $sql);
                                     if ($resultat == false) {
                                         die("<br>Echec d'execution de la requete : " . $sql);
