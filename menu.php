@@ -1,64 +1,57 @@
-<nav>
-  <table border=1>
-    <tr>
-      <th><a href="./">Acceuil</a></th>
-      <th><a href="./liste_circuits.php?c=default">Circuits</a></th>
-      <th><a href="./moncompte.php?c=default">Mon compte</a></th>
-                  <br>
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li><a href="./index.php">Acceuil</a></li>
+          <li><a href="./liste_circuits.php?c=default">Circuits</a></li>
+
+          <!--
+            Si on est admin, on voit les pages d administration
+            -->
+          <?php
+          if (isset($_SESSION['type'])) {
+          ?>
+
+            <li><a href="#">Historique</a></li>
+            <li><a href="#">Planning</a></li>
+            <li><a href="#">Mon compte</a></li>
+
+            <?php
+            if ($_SESSION['type'] == "Administrateur") {
+            ?>
 
 
-      <?php
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="./personne.php?c=default">Personnes</a></li>
+                  <li><a href="./administrateur.php?c=default">Administrateurs</a></li>
+                  <li><a href="./client.php?c=default">Clients</a></li>
+                  <li><a href="./lieu.php?c=default">Lieux</a></li>
 
-      if (isset($_SESSION['type'])) {
-        if ($_SESSION['type'] == "Administrateur") {
-      ?>
 
-          <th>
-            <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-            <ul class="menulist">
-              <li>
-                <p>Administration</p>
-                <div class="cache">
-
-                  <a href="./lieu.php?c=default">Lieu</a>
-                  <br>
-                  <a href="./client.php?c=default">Client</a>
-                  <br>
-                  <a href="./administrateur.php?c=default">Administrateur</a>
-                  <br>
-                  <a href="./personne.php?c=default">Personne</a>
-                </div>
+                </ul>
               </li>
-            </ul>
-            <script type="text/javascript">
-              $(function() {
-                // Quand on entre dans un item de menu <li>, on affiche
-                $('.menulist li').mouseenter(function() {
-                  $(this).find('.cache').show('slow');
-                });
 
-                // Quand on en sort, on ferme
-                $('.menulist li').mouseleave(function() {
-                  $(this).find('.cache').hide('slow');
-                });
-              });
-            </script>
-          </th>
-
-      <?php
-        }
-      }
-
-
-
-      ?>
-
-    </tr>
-  </table>
+          <?php
+            }
+          }
+          ?>
 
 
 
 
 
+        </ul>
 
-</nav>
+      </div><!-- /.nav-collapse -->
+    </div>
+  </div><!-- /navbar-inner -->
+</div>
