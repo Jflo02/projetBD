@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <title>Circuits</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
 </head>
 
-<body>
+<body class="bg-light">
 
 
 
@@ -231,6 +231,7 @@
 
 
     </div>
+
     <!--On ferme le div du corps -->
 </body>
 

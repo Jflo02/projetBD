@@ -21,7 +21,8 @@
     include("./menu.php")
 
     ?>
-    
+        <link rel="stylesheet" href="./styles.css" />
+
 
 
    
