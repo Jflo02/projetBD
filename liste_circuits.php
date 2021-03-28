@@ -9,6 +9,9 @@
 
 <body>
 
+
+
+
     <?php //test en ayant stash
     //ici on se connecte a la base sql
     include("../connection_database.php");

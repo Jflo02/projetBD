@@ -12,9 +12,7 @@
           <li><a href="./index.php">Acceuil</a></li>
           <li><a href="./liste_circuits.php?c=default">Circuits</a></li>
 
-          <!--
-            Si on est admin, on voit les pages d administration
-            -->
+          
           <?php
           if (isset($_SESSION['type'])) {
           ?>
@@ -29,7 +27,7 @@
 
 
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration<b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration</a>
                 <ul class="dropdown-menu">
                   <li><a href="./personne.php?c=default">Personnes</a></li>
                   <li><a href="./administrateur.php?c=default">Administrateurs</a></li>

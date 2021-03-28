@@ -34,6 +34,19 @@
     border-bottom: 3px solid red;
 }
 
-
-
+body, html {
+    height: 100%;
+  }
+  .bg {
+    /* The image used */
+    background-image: url("./img/pexels-abdullah-ghatasheh-1631677.jpg");
+  
+    /* Full height */
+    height: 100%;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 
