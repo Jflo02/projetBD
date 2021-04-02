@@ -26,7 +26,7 @@
         $stmt = sqlsrv_query($conn, $sql);
     ?>
 
-    <table border=1>
+<table class="table table-striped">
         <tr>
             <td>Ordre Etape</td>
             <td>Lieu</td>

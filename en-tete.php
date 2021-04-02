@@ -31,24 +31,24 @@ if (isset($_GET['logout'])) {
 <link rel="stylesheet" href="./styles.css" />
 
 
-    <div class="container-fluid bg-primary">
-        <div class="row justify-content-around">
+    <div class="container-fluid bg-secondary">
+        <div class="row">
 
-            <div class="col-md-4">
-                <img src="./logo.png" alt="Logo de Epsi Voyage" width="25%">
+            <div class="col align-self-start">
+                <img src="./logo.png" alt="Logo de Epsi Voyage" width="5%">
             </div>
-            <div class="col-md-4 offset-md-4">
+            <div class="colalign-self-end">
                 <?php
                 if (!isset($_SESSION['id_user'])) {
-                    echo '<a href="./login.php">Se connecter</a>';
+                    echo '<a href="./login.php" class="text-light">Se connecter</a>';
                     echo '<br>';
-                    echo '<a href="./Creation_De_Compte.php?c=test">S\'inscrire</a>';
+                    echo '<a href="./Creation_De_Compte.php?c=test" class="text-light">S\'inscrire</a>';
                 } else {
 
-                    echo 'Connecté en tant que :' . $_SESSION['prenom_user'];
-                    echo '<br><br>';
+                    echo '<p class="text-light">Connecté en tant que :' . $_SESSION['prenom_user'] . '</p>';
+                    echo '<br><br><p class="text-light">';
                     echo  $_SESSION['type'];
-                    echo '<br><br><a href="./index.php?logout=1">Se deconnecter</a><br><br>';
+                    echo '</p><br><br><a href="./index.php?logout=1" class="text-light">Se deconnecter</a><br><br>';
                 }
                 ?>
             </div>

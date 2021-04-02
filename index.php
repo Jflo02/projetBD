@@ -21,19 +21,18 @@
     include("./menu.php")
 
     ?>
-        <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
 
 
 
-   
 
-    <div id="corps">
 
-        <div id="explications">
-            <p>
-                Bienvenue sur Epsi voyage, le site numéro 1 de voyage</p>
+    <div class="container">
 
-        </div>
+
+        <p class="jumbotron">
+            Bienvenue sur Epsi voyage, le site numéro 1 de voyage
+        </p>
 
     </div>
     <!--On ferme le div du corps -->

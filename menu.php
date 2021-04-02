@@ -17,8 +17,8 @@
           if (isset($_SESSION['type'])) {
           ?>
 
-            <li><a href="#">Historique</a></li>
-            <li><a href="#">Planning</a></li>
+            <li><a href="./historique.php">Historique</a></li>
+            <li><a href="./planning.php">Planning</a></li>
             <li><a href="./moncompte.php?c=default">Mon compte</a></li>
 
             <?php
