@@ -124,17 +124,45 @@
                             die("<br>Echec d'execution de la requete : " . $sql);
                         } else {
                             if ($resultat) {
-                                $row = sqlsrv_has_rows($resultat);
-                                if ($row === TRUE) {
-                                    $row = sqlsrv_fetch_array($resultat);
-                                    echo "<br></br>";
-                                    echo "Réservation a bien été prise";
-                                    echo "<br></br>";
-                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $_GET['id'] . "','" . $max_id . "','1',NULL) ";
-                                    $resultat = sqlsrv_query($conn, $sql);
-                                    if ($resultat == false) {
-                                        die("<br>Echec d'execution de la requete : " . $sql);
-                                    }
+                                    $row = sqlsrv_has_rows($resultat);
+                                    if ($row === TRUE) {
+                                        $row = sqlsrv_fetch_array($resultat);
+                                        echo "<br></br>";
+                                        echo "Réservation a bien été prise";
+                                        echo "<br></br>";
+                                        $sql = "SELECT * FROM Passager where Id_Personne='" . $row['Id_Personne'] . "'";
+                                        $resultat = sqlsrv_query($conn, $sql);
+                                        if ($resultat) {
+                                            $row = sqlsrv_has_rows($resultat);
+                                            if ($row === TRUE) {
+                                                echo "lalo";
+                                                $sql = "SELECT * FROM Concerne where Id_Reservation='" . $max_id . "'";
+                                                $resultat = sqlsrv_query($conn, $sql);
+                                                if ($resultat) {
+                                                    $row = sqlsrv_has_rows($resultat);
+                                                    if ($row === TRUE) {
+                                                        echo 'hello';
+                                                    }else{
+                                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $_SESSION['id_user'] . "','" . $max_id . "','1',NULL) ";
+                                                    $resultat = sqlsrv_query($conn, $sql);
+                                                if ($resultat == false) {
+                                                die("<br>Echec d'execution de la requete : " . $sql);}}}
+                                            } else {
+                                                echo "lalalalal";
+                    
+                                                $row = sqlsrv_fetch_array($resultat);
+                                                $sql = "INSERT INTO Passager (Id_Personne) values ('" . $row['Id_Personne'] . "')";
+                                                $resultat = sqlsrv_query($conn, $sql);
+                                                $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $_SESSION['id_user'] . "','" . $max_id . "','1',NULL) ";
+                                                $resultat = sqlsrv_query($conn, $sql);
+                                                if ($resultat == false) {
+                                                die("<br>Echec d'execution de la requete : " . $sql);
+
+                                                }
+                                }
+                                }
+
+                                    
                                 } else {
                                     echo "<br></br>";
                                     $max_id = "SELECT MAX(Id_Personne) FROM Personne";
@@ -167,32 +195,34 @@
                                         die("<br>Echec d'execution de la requete : " . $sql);
                                     }
                                 }
+                                }
                             }
                         }
                     }
-                }
                 break;
 
             default:
                 echo '<br>';
-                $sql = 'Select Circuit.Id_Circuit, Circuit.Descriptif_Circuit, Circuit.Date_Depart, Circuit.Duree_Circuit, (Nbr_Place_Totale - isnull(Place_Reserve,0)) as Nbr_Place_Restante
+                $sql = 'Select Circuit.Id_Circuit, Circuit.Descriptif_Circuit, Circuit.Date_Depart, Circuit.Duree_Circuit, (Nbr_Place_Totale - isnull(Place_Reserve,0)) as Nbr_Place_Restante, Circuit.Prix_Inscription
                 From Circuit left join (Select Id_Circuit, sum(Nbr_Place_Reservation) as Place_Reserve
                 from Reservation
                 group by Id_Circuit) as tab on Circuit.Id_Circuit = tab.Id_Circuit';
                 $stmt = sqlsrv_query($conn, $sql);
+
                 //on fait un tableau avec une ligne par circuit avec ses infos
 
                     ?>
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col align-self-center">
-                                <table border=1>
+                                <table class="table table-striped">
                                     <tr>
                                         <td>Numéro du circuit</td>
                                         <td>Nom du circuit</td>
                                         <td>Depart</td>
                                         <td>Durée</td>
                                         <td>Nombre de place restante</td>
+                                        <td>Prix</td>
                                     </tr>
 
                             <?php
@@ -205,6 +235,7 @@
                                 echo '<td>' . $str_date . '</td>';
                                 echo '<td>' . $row['Duree_Circuit'] . '</td>';
                                 echo '<td>' . $row['Nbr_Place_Restante'] . '</td>';
+                                echo '<td>' . $row['Prix_Inscription'] . '</td>';
                                 if ($row['Nbr_Place_Restante'] == 0) {
                                     echo "<td>plus de place disponible</td>";
                                 } else {
