@@ -46,7 +46,7 @@
             echo '<td>' . $row['Ville_Lieu'] . '</td>';
             echo '<td>' . $row['Pays_Lieu'] . '</td>';
             echo '<td>' . $str_date . '</td>';
-            echo '<td>' . $row['Duree_Etape'] . '</td>';
+            echo '<td>' . $row['Duree_Etape'] . ' minutes' .'</td>';
             if (isset($_SESSION['type'])) {
                 if ($_SESSION['type'] == "Administrateur") {
                     echo '<td><a href=./modif_etape.php?c=defaut&id='.$_GET['id'].'&ordre='.$row['Ordre_Etape'].'>Modifier</a></td>';
