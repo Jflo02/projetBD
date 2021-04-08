@@ -12,6 +12,7 @@
 
     //on met l'en-tete
     include("./en-tete.php");
+    include("./menu.php");
 
     //on met le menu seulement si on est connecté et admin
 
@@ -42,9 +43,57 @@
             $sql = "INSERT INTO Personne (Id_Personne ,Nom, Prenom, Date_Naissance, Personne_MDP, Personne_Mail) values
             ('" . $max_id . "','" . $_GET['nom_pers'] . "','" . $_GET['prenom_pers'] . "','" . $_GET['DN_pers'] . "','" . $_GET['mdp_pers'] . "','" . $_GET['mail_pers'] . "')";
             $resultat = sqlsrv_query($conn, $sql);
-            if ($resultat == FALSE) {
-                die("<br>Echec d'execution de la requete : " . $sql);
-            } else {
+            if ($resultat == FALSE) { //si on peut pas ajouter
+
+                $sql = "SELECT * FROM Personne where Personne_Mail='" . $_GET['mail_pers'] . "'";
+                $resultat = sqlsrv_query($conn, $sql);
+
+                if (sqlsrv_has_rows($resultat)) { //check si mail ds table personne
+
+                    //le mail est dans la table personne
+                    $row = sqlsrv_fetch_array($resultat);
+                    $sql = "SELECT * FROM Client where Id_Personne='" . $row['Id_Personne'] . "'";
+                    $resultat = sqlsrv_query($conn, $sql);
+
+                    if (sqlsrv_has_rows($resultat)) { //si mail ds client
+                        //la personne est cliente
+                        $sql = "SELECT * FROM Passager where Id_Personne='" . $row['Id_Personne'] . "'";
+                        $resultat = sqlsrv_query($conn, $sql);
+
+                        if (sqlsrv_has_rows($resultat)) {
+                            
+                            //la pers est cliente mais pas passager -> juste mail déja utilisé
+                            echo '<div class="jumbotron">Cet email est déja utilisé par un client</div>';
+                        }
+                    } else { //si le mail est pas dans client:
+
+                        $sql = "SELECT * FROM Passager where Id_Personne='" . $row['Id_Personne'] . "'";
+                        $resultat = sqlsrv_query($conn, $sql);
+
+                        if (sqlsrv_has_rows($resultat)) {
+                            //la personne est un passager mais pas client
+                            echo '<div class="jumbotron">
+                            Votre e-mail a été utilisé pour un passager d\'un circuit, nous vous invitons à
+                             cliquer sur <a href="#">ce lien</a> pour recevoir par mail le mot de passe aléatoire et temporaire qui vous a été attribué,
+                              sur cet e-mail vous trouverez un lien pour le modifier
+                              </div>';
+
+                            $sql = "INSERT INTO Client (Id_Personne) values
+                            ('" . $row['Id_Personne'] . "')";
+                            $resultat = sqlsrv_query($conn, $sql);
+
+                            if ($resultat) {
+                                echo 'Vous avez bien été promu client, vous pouvez maintenant vous connecter et réserver des voyages';
+                            } else{
+                                echo 'erreur lalalala';
+                                print_r($resultat);
+                            }
+                        }
+                    }
+                } else { //si c'est une autre erreur
+                    die("<br>Echec d'execution de la requete : " . $sql);
+                }
+            } else { //si on peut ajouter :
 
                 $sql = "INSERT INTO Client (Id_Personne) values
             ('" . $max_id . "')";
@@ -82,7 +131,7 @@
                 <form action="./Creation_De_Compte.php" method="get">
                     <input type="hidden" name="c" value="promotion">
                     <?php
-                    echo '<input type="hidden" name="id" value="'. $row['Id_Personne'] .'">';
+                    echo '<input type="hidden" name="id" value="' . $row['Id_Personne'] . '">';
                     ?>
                     <input type="submit" value="Oui">
                 </form>
@@ -110,6 +159,10 @@
                 ('" . $max_id . "')";
                     $resultat = sqlsrv_query($conn, $sql);
 
+                    $sql = "INSERT INTO Client (Id_Personne) values
+                ('" . $max_id . "')";
+                    $resultat = sqlsrv_query($conn, $sql);
+
                     echo 'Le compte Administrateur a bien été créé.';
                 }
             }
@@ -120,10 +173,10 @@
 
             $sql = "INSERT INTO Administrateur (Id_Personne) values
                 ('" . $_GET['id'] . "')";
-                    $resultat = sqlsrv_query($conn, $sql);
+            $resultat = sqlsrv_query($conn, $sql);
 
-                    echo 'La personne a bien été promu administrateur';
-                
+            echo 'La personne a bien été promu administrateur';
+
 
             break;
 

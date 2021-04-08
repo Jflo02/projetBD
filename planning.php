@@ -68,7 +68,9 @@
                         echo '</tr>';
                         echo '</table>';
                     } else {
+                        echo '<div class="jumbotron">';
                         echo 'Vous n\'avez pas de circuits prévus';
+                        echo '</div>';
                     }
 
 

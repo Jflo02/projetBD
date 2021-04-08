@@ -70,7 +70,9 @@
                         echo '</tr>';
                         echo '</table>';
                     } else {
-                        echo 'Vous n\'avez pas de circuits prévus';
+                        echo '<div class="jumbotron">';
+                        echo 'Vous n\'avez pas de circuits dans votre historique';
+                        echo '</div>';
                     }
 
                         ?>
