@@ -185,19 +185,19 @@
             ?>
             <form action="./Creation_De_Compte.php" method="get">
                 <label for="nom">Nom:</label>
-                <input type="text" id="nom_pers" name="nom_pers"><br><br>
+                <input type="text" id="nom_pers" name="nom_pers" required="required"><br><br>
 
                 <label for="prenom">Prenom:</label>
-                <input type="text" id="prenom_pers" name="prenom_pers"><br><br>
+                <input type="text" id="prenom_pers" name="prenom_pers" required="required"><br><br>
 
                 <label for="Date_Naissance">Date_Naissance:</label>
-                <input type="date" id="DN_pers" name="DN_pers"><br><br>
+                <input type="date" id="DN_pers" name="DN_pers" required="required"><br><br>
 
                 <label for="password">Mot de passe :</label>
-                <input type="password" id="mdp_pers" name="mdp_pers"><br><br>
+                <input type="password" id="mdp_pers" name="mdp_pers" minlength="8" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"><br><br>
 
                 <label for="Personne_Mail">Mail:</label>
-                <input type="text" id="mail_pers" name="mail_pers"><br><br>
+                <input type="text" id="mail_pers" name="mail_pers" required="required"><br><br>
 
                 <input type="hidden" name="c" value="add-admin">
                 <input type="submit" value="Envoyer">
@@ -213,19 +213,20 @@
         ?>
             <form action="./Creation_De_Compte.php" method="get">
                 <label for="nom">Nom:</label>
-                <input type="text" id="nom_pers" name="nom_pers"><br><br>
+                <input type="text" id="nom_pers" name="nom_pers" required="required"><br><br>
 
                 <label for="prenom">Prenom:</label>
-                <input type="text" id="prenom_pers" name="prenom_pers"><br><br>
+                <input type="text" id="prenom_pers" name="prenom_pers" required="required"><br><br>
 
                 <label for="Date_Naissance">Date_Naissance:</label>
-                <input type="date" id="DN_pers" name="DN_pers"><br><br>
+                <input type="date" id="DN_pers" name="DN_pers" required="required"><br><br>
 
                 <label for="password">Mot de passe :</label>
-                <input type="password" id="mdp_pers" name="mdp_pers"><br><br>
+                <input type="password" id="mdp_pers" name="mdp_pers" minlength="8" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"><br><br>
+                <p>8 caractères d'au moins un chiffre et une lettre majuscule et minuscule</p>
 
                 <label for="Personne_Mail">Mail:</label>
-                <input type="text" id="mail_pers" name="mail_pers"><br><br>
+                <input type="text" id="mail_pers" name="mail_pers" required="required"><br><br>
 
                 <input type="hidden" name="c" value="add">
                 <input type="submit" value="Envoyer">
