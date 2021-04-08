@@ -130,9 +130,9 @@
                                         echo "<br></br>";
                                         echo "Réservation a bien été prise";
                                         echo "<br></br>";
-                                        $sql = "SELECT * FROM Passager where Id_Personne='" . $row['Id_Personne'] . "'";
+                                        $sql = "SELECT * FROM Passager where Id_Personne='" . $row['Id_Personne'] . "'";//si la personne est dans les passagers
                                         $resultat = sqlsrv_query($conn, $sql);
-                                        if ($resultat) {
+                                        if ($resultat) {//si elle l'est:
                                             $row = sqlsrv_has_rows($resultat);
                                             if ($row === TRUE) {
                                                 echo "lalo";
@@ -147,7 +147,7 @@
                                                     $resultat = sqlsrv_query($conn, $sql);
                                                 if ($resultat == false) {
                                                 die("<br>Echec d'execution de la requete : " . $sql);}}}
-                                            } else {
+                                            } else {//si elle est pas en passager
                                                 echo "lalalalal";
                     
                                                 $row = sqlsrv_fetch_array($resultat);
@@ -163,7 +163,7 @@
                                 }
 
                                     
-                                } else {
+                                } else {//si la personne n'est pas ds la table personne
                                     echo "<br></br>";
                                     $max_id = "SELECT MAX(Id_Personne) FROM Personne";
                                     $max_id_result = sqlsrv_query($conn, $max_id);
