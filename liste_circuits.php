@@ -45,7 +45,7 @@
                 <form action="./liste_circuits.php?" method="get">
 
                     <label for="number">Nombre de Place à reserver(vous y compris):</label>
-                    <input type="number" id="Nbr_Place_Reservation" name="Nbr_Place_Reservation" min="1" max="<?php echo $Nbrmax ?>"><br><br>
+                    <input type="number" id="Nbr_Place_Reservation" name="Nbr_Place_Reservation" min="1" max="<?php echo $Nbrmax ?>"required="required"><br><br>
                     <input type="hidden" name="c" value="passa">
                     <?php
                     echo '<input type="hidden" name="id" value=' . $_GET['id'] . '>';
@@ -71,16 +71,16 @@
                         <form action="./liste_circuits.php" method="get">
 
                             <label for="text">Prénom du passager <?php echo $j ?> :</label>
-                            <input type="text" id="prenom_passager<?php echo $j ?>" name="prenom_passager<?php echo $j ?>"><br><br>
+                            <input type="text" id="prenom_passager<?php echo $j ?>" name="prenom_passager<?php echo $j ?>" required="required"><br><br>
 
                             <label for="text">Nom du passager <?php echo $j ?> :</label>
-                            <input type="text" id="nom_passager<?php echo $j ?>" name="nom_passager<?php echo $j ?>"><br><br>
+                            <input type="text" id="nom_passager<?php echo $j ?>" name="nom_passager<?php echo $j ?>" required="required"><br><br>
 
                             <label for="text">Mail du passager <?php echo $j ?> :</label>
-                            <input type="text" id="mail_passager<?php echo $j ?>" name="mail_passager<?php echo $j ?>"><br><br>
+                            <input type="text" id="mail_passager<?php echo $j ?>" name="mail_passager<?php echo $j ?>"required="required"><br><br>
 
                             <label for="date">Date de Naissance du passager <?php echo $j ?> :</label>
-                            <input type="date" id="Naissance_passager<?php echo $j ?>" name="Naissance_passager<?php echo $j ?>"><br><br>
+                            <input type="date" id="Naissance_passager<?php echo $j ?>" name="Naissance_passager<?php echo $j ?>" required="required"><br><br>
                         <?php
 
                     }
@@ -118,6 +118,8 @@
                     //vérifie si elle se trouve dans la BD
                     for ($i = 1; $i < $_GET['nbr_passa']; $i++) {
                         $mail_passager = 'mail_passager' . strval($i);
+                        $indicegetprenom = 'prenom_passager' . strval($i);
+                        $indicegetnom = 'nom_passager' . strval($i);
                         $sql = "SELECT * FROM Personne where Personne_Mail='" . $_GET["$mail_passager"] . "'";
                         $resultat_personne = sqlsrv_query($conn, $sql);
                         if ($resultat_personne == false) {
@@ -128,7 +130,7 @@
                                     if ($row === TRUE) {
                                         $row = sqlsrv_fetch_array($resultat_personne);
                                         echo "<br></br>";
-                                        echo "Réservation a bien été prise";
+                                        echo "Réservation a bien été prise pour ". $_GET["$indicegetprenom"]. " ". $_GET["$indicegetnom"];
                                         echo "<br></br>";
                                         $sql = "SELECT * FROM Passager where Id_Personne='" . $row['Id_Personne'] . "'";//si la personne est dans les passagers
                                         $resultat = sqlsrv_query($conn, $sql);
@@ -139,24 +141,21 @@
                                                     $resultat= sqlsrv_query($conn, $sql);
                                                     $row = sqlsrv_fetch_array($resultat);
                                                     
-                                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $row['Id_Personne'] . "','" . $max_id . "','1',NULL) ";
-                                                    echo $sql;
+                                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $row['Id_Personne'] . "','" . $max_id . "') ";
                                                     $resultat = sqlsrv_query($conn, $sql);
                                                 if ($resultat == false) {
                                                 die("<br>Echec d'execution de la requete : " . $sql);}
                                             } else {//si elle est pas en passager
-                                                echo "lalalalal";
 
                                                 $sql = "SELECT * FROM Personne where Personne_Mail='" . $_GET["$mail_passager"] . "'";
                                                 $resultat= sqlsrv_query($conn, $sql);
                                                 $row = sqlsrv_fetch_array($resultat);
-                                                echo $resultat;
+
 
                                                 $sql = "INSERT INTO Passager (Id_Personne) values ('" . $row['Id_Personne'] . "')";
-                                                echo $sql;
                                                 $resultat = sqlsrv_query($conn, $sql);
-                                                $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $row['Id_Personne'] . "','" . $max_id . "','1',NULL) ";
-                                                echo $sql;
+                                                $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $row['Id_Personne'] . "','" . $max_id . "') ";
+        
                                                 $resultat = sqlsrv_query($conn, $sql);
                                                 if ($resultat == false) {
                                                 die("<br>Echec d'execution de la requete : " . $sql);
@@ -198,7 +197,7 @@
                                         die("<br>Echec d'execution de la requete : " . $sql);
                                     }
 
-                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $max_id_pers . "','" . $max_id . "','1',NULL) ";
+                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $max_id_pers . "','" . $max_id . "') ";
                                     $resultat = sqlsrv_query($conn, $sql);
                                     if ($resultat == false) {
                                     die("<br>Echec d'execution de la requete : " . $sql);
