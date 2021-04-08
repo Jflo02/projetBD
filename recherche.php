@@ -23,7 +23,7 @@
                 ?>
                 <td><label for="date_debut">Date de début</label></td>
                 <td><input type="date" id="date_debut" name="date_debut" value="<?php echo $today ?>"></td>
-                <td><label for="date_fin">Date de fin</label></td>
+                <td><label for="date_fin">Date de retour maximum</label></td>
                 <td><input type="date" id="date_fin" name="date_fin"></td>
                 <td><label for="jours">Nombre de jours maximum</label></td>
                 <td><input type="range" id="jours" name="jours" min="<?php echo $DureeMin ?>" max="<?php echo $DureeMax ?>" value="<?php echo $DureeMax ?>" oninput="this.nextElementSibling.value = this.value"><output><?php echo $DureeMax ?></output></td>
@@ -37,7 +37,7 @@
                 ?>
                  <td><label for="date_debut">Date de début</label></td>
                 <td><input type="date" id="date_debut" name="date_debut" value="<?php echo $_GET['date_debut'] ?>"></td>
-                <td><label for="date_fin">Date de fin</label></td>
+                <td><label for="date_fin">Date de retour maximum</label></td>
                 <td><input type="date" id="date_fin" name="date_fin" value="<?php echo $_GET['date_fin'] ?>"></td>
                 <td><label for="jours">Nombre de jours maximum</label></td>
                 <td><input type="range" id="jours" name="jours" min="<?php echo $DureeMin ?>" max="<?php echo $DureeMax ?>" value="<?php echo $_GET['jours'] ?>" oninput="this.nextElementSibling.value = this.value"><output><?php echo $_GET['jours'] ?></output></td>
