@@ -68,6 +68,11 @@
             $stmt = sqlsrv_query($conn, $sql);
             $row = sqlsrv_fetch_array($stmt);
             $Nbrmax = $row['NbrEtape'] + 1;
+            $sql2 = "SELECT Date_Depart, dateadd(DAY, Duree_Circuit, Date_Depart) as date_fin FROM Circuit Where Id_Circuit =". $_GET['id_circuit'];
+            $result = sqlsrv_query($conn, $sql2);
+            $ans = sqlsrv_fetch_array($result);
+            $date_debut = $ans['Date_Depart']->format('Y-m-d');;
+            $date_fin = $ans['date_fin']->format('Y-m-d');
             ?>
             <form action="./ajout_etape.php" method="get">
                 <label for="ordre">Ordre : </label>
@@ -75,8 +80,7 @@
                 <label for="duree">Durée en minute:</label>
                 <input type="number" id="duree" name="duree" min="1"><br><br>
                 <label for="date">Date :</label>
-                <!-- TO DO VERIFE DATE-->
-                <input type="date" id="date" name="date"><br><br>
+                <input type="date" id="date" name="date" min="<?php echo $date_debut?>" max="<?php echo $date_fin?>" value="<?php echo $date_debut?>"><br><br>
                 <input type="hidden" name="c" value="update">
                 <input type="hidden" name="nom" value="<?php echo $_GET['nom']?>">
                 <input type="hidden" name="ville" value="<?php echo $_GET['ville']?>">
@@ -110,7 +114,7 @@
             $stmt = sqlsrv_query($conn, $sql);
             $row = sqlsrv_fetch_array($stmt);
             echo $row['Id_Circuit']. " - ". $row['Descriptif_Circuit']. "</br>";
-            echo "Cliquez sur l'étape que vous souhaitez ajouter au circuit </br> </br>";
+            echo "Cliquez sur l'étape que vous souhaitez ajouter au circuit ou  <a href=./lieu.php?c=create>Cliquez ici pour créer un nouveau lieu</a></br> </br>";
             
             echo '<br>';
             $sql = 'select * FROM Lieu';
