@@ -148,7 +148,7 @@
                     </table>
             <?php
 
-                    echo '<br><a href="./Creation_De_Compte.php?c=test.php?c=add">Créer un client</a>';
+                    echo '<br><a href="./Creation_De_Compte.php?c=test">Créer un client</a>';
 
                     break;
 

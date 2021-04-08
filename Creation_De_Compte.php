@@ -14,13 +14,8 @@
     include("./en-tete.php");
     include("./menu.php");
 
-    //on met le menu seulement si on est connecté et admin
 
-    if (isset($_SESSION['type'])) {
-        if ($_SESSION['type'] == "Administrateur") {
-            include("./menu.php");
-        }
-    }
+    
 
     if (!isset($_GET['c'])) {
         die();
@@ -181,7 +176,7 @@
             break;
 
 
-        case "admin": //créer un compte admin si on es tadmin
+        case "admin": //créer un compte admin si on est admin
             ?>
             <form action="./Creation_De_Compte.php" method="get">
                 <label for="nom">Nom:</label>
