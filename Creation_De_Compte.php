@@ -190,7 +190,8 @@
 
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="mdp_pers" name="mdp_pers" minlength="8" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"><br><br>
-
+                <p>8 caractères d'au moins un chiffre et une lettre majuscule et minuscule</p>
+                
                 <label for="Personne_Mail">Mail:</label>
                 <input type="text" id="mail_pers" name="mail_pers" required="required"><br><br>
 
