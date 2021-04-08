@@ -139,7 +139,7 @@
                                                     $resultat= sqlsrv_query($conn, $sql);
                                                     $row = sqlsrv_fetch_array($resultat);
                                                     
-                                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $row['Id_Personne'] . "','" . $max_id . "','1',NULL) ";
+                                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $row['Id_Personne'] . "','" . $max_id . "') ";
                                                     echo $sql;
                                                     $resultat = sqlsrv_query($conn, $sql);
                                                 if ($resultat == false) {
@@ -155,7 +155,7 @@
                                                 $sql = "INSERT INTO Passager (Id_Personne) values ('" . $row['Id_Personne'] . "')";
                                                 echo $sql;
                                                 $resultat = sqlsrv_query($conn, $sql);
-                                                $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $row['Id_Personne'] . "','" . $max_id . "','1',NULL) ";
+                                                $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $row['Id_Personne'] . "','" . $max_id . "') ";
                                                 echo $sql;
                                                 $resultat = sqlsrv_query($conn, $sql);
                                                 if ($resultat == false) {
@@ -198,7 +198,7 @@
                                         die("<br>Echec d'execution de la requete : " . $sql);
                                     }
 
-                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation ,EtatReservation ,DateAnnulation) values ('" . $max_id_pers . "','" . $max_id . "','1',NULL) ";
+                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $max_id_pers . "','" . $max_id . "') ";
                                     $resultat = sqlsrv_query($conn, $sql);
                                     if ($resultat == false) {
                                     die("<br>Echec d'execution de la requete : " . $sql);
