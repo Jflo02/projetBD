@@ -53,7 +53,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col align-self-center">
-                    <table border=1>
+                    <table class="table table-striped">
                         <tr>
                             <td>Numéro du circuit</td>
                             <td>Nom du circuit</td>
