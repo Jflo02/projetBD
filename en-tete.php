@@ -35,7 +35,7 @@ if (isset($_GET['logout'])) {
         <div class="row">
 
             <div class="col align-self-start">
-                <img src="./logo.png" alt="Logo de Epsi Voyage" width="5%">
+                <img src="./logo.png" alt="Logo de Epsi Voyage" >
             </div>
             <div class="colalign-self-end">
                 <?php

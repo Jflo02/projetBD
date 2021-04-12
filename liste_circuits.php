@@ -20,7 +20,7 @@
     //on met l'en-tete
     include("./en-tete.php");
     include("./menu.php");
- 
+
     ?>
 
     <div id="corps">
@@ -45,7 +45,7 @@
                 <form action="./liste_circuits.php?" method="get">
 
                     <label for="number">Nombre de Place à reserver(vous y compris):</label>
-                    <input type="number" id="Nbr_Place_Reservation" name="Nbr_Place_Reservation" min="1" max="<?php echo $Nbrmax ?>"required="required"><br><br>
+                    <input type="number" id="Nbr_Place_Reservation" name="Nbr_Place_Reservation" min="1" max="<?php echo $Nbrmax ?>" required="required"><br><br>
                     <input type="hidden" name="c" value="passa">
                     <?php
                     echo '<input type="hidden" name="id" value=' . $_GET['id'] . '>';
@@ -77,7 +77,7 @@
                             <input type="text" id="nom_passager<?php echo $j ?>" name="nom_passager<?php echo $j ?>" required="required"><br><br>
 
                             <label for="text">Mail du passager <?php echo $j ?> :</label>
-                            <input type="text" id="mail_passager<?php echo $j ?>" name="mail_passager<?php echo $j ?>"required="required"><br><br>
+                            <input type="text" id="mail_passager<?php echo $j ?>" name="mail_passager<?php echo $j ?>" required="required"><br><br>
 
                             <label for="date">Date de Naissance du passager <?php echo $j ?> :</label>
                             <input type="date" id="Naissance_passager<?php echo $j ?>" name="Naissance_passager<?php echo $j ?>" required="required"><br><br>
@@ -126,46 +126,44 @@
                             die("<br>Echec d'execution de la requete : " . $sql);
                         } else {
                             if ($resultat_personne) {
-                                    $row = sqlsrv_has_rows($resultat_personne);
-                                    if ($row === TRUE) {
-                                        $row = sqlsrv_fetch_array($resultat_personne);
-                                        echo "<br></br>";
-                                        echo "Réservation a bien été prise pour ". $_GET["$indicegetprenom"]. " ". $_GET["$indicegetnom"];
-                                        echo "<br></br>";
-                                        $sql = "SELECT * FROM Passager where Id_Personne='" . $row['Id_Personne'] . "'";//si la personne est dans les passagers
-                                        $resultat = sqlsrv_query($conn, $sql);
-                                        if ($resultat) {//si elle l'est:
-                                            $row = sqlsrv_has_rows($resultat);
-                                            if ($row === TRUE) {
-                                                $sql = "SELECT * FROM Personne where Personne_Mail='" . $_GET["$mail_passager"] . "'";
-                                                    $resultat= sqlsrv_query($conn, $sql);
-                                                    $row = sqlsrv_fetch_array($resultat);
-                                                    
-                                                    $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $row['Id_Personne'] . "','" . $max_id . "') ";
-                                                    $resultat = sqlsrv_query($conn, $sql);
-                                                if ($resultat == false) {
-                                                die("<br>Echec d'execution de la requete : " . $sql);}
-                                            } else {//si elle est pas en passager
+                                $row = sqlsrv_has_rows($resultat_personne);
+                                if ($row === TRUE) {
+                                    $row = sqlsrv_fetch_array($resultat_personne);
+                                    echo "<br></br>";
+                                    echo "Réservation a bien été prise pour " . $_GET["$indicegetprenom"] . " " . $_GET["$indicegetnom"];
+                                    echo "<br></br>";
+                                    $sql = "SELECT * FROM Passager where Id_Personne='" . $row['Id_Personne'] . "'"; //si la personne est dans les passagers
+                                    $resultat = sqlsrv_query($conn, $sql);
+                                    if ($resultat) { //si elle l'est:
+                                        $row = sqlsrv_has_rows($resultat);
+                                        if ($row === TRUE) {
+                                            $sql = "SELECT * FROM Personne where Personne_Mail='" . $_GET["$mail_passager"] . "'";
+                                            $resultat = sqlsrv_query($conn, $sql);
+                                            $row = sqlsrv_fetch_array($resultat);
 
-                                                $sql = "SELECT * FROM Personne where Personne_Mail='" . $_GET["$mail_passager"] . "'";
-                                                $resultat= sqlsrv_query($conn, $sql);
-                                                $row = sqlsrv_fetch_array($resultat);
-
-
-                                                $sql = "INSERT INTO Passager (Id_Personne) values ('" . $row['Id_Personne'] . "')";
-                                                $resultat = sqlsrv_query($conn, $sql);
-                                                $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $row['Id_Personne'] . "','" . $max_id . "') ";
-        
-                                                $resultat = sqlsrv_query($conn, $sql);
-                                                if ($resultat == false) {
+                                            $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $row['Id_Personne'] . "','" . $max_id . "') ";
+                                            $resultat = sqlsrv_query($conn, $sql);
+                                            if ($resultat == false) {
                                                 die("<br>Echec d'execution de la requete : " . $sql);
+                                            }
+                                        } else { //si elle est pas en passager
 
-                                                }
-                                }
-                                }
+                                            $sql = "SELECT * FROM Personne where Personne_Mail='" . $_GET["$mail_passager"] . "'";
+                                            $resultat = sqlsrv_query($conn, $sql);
+                                            $row = sqlsrv_fetch_array($resultat);
 
-                                    
-                                } else {//si la personne n'est pas ds la table personne
+
+                                            $sql = "INSERT INTO Passager (Id_Personne) values ('" . $row['Id_Personne'] . "')";
+                                            $resultat = sqlsrv_query($conn, $sql);
+                                            $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $row['Id_Personne'] . "','" . $max_id . "') ";
+
+                                            $resultat = sqlsrv_query($conn, $sql);
+                                            if ($resultat == false) {
+                                                die("<br>Echec d'execution de la requete : " . $sql);
+                                            }
+                                        }
+                                    }
+                                } else { //si la personne n'est pas ds la table personne
                                     echo "<br></br>";
                                     $max_id_pers = "SELECT MAX(Id_Personne) FROM Personne";
                                     $max_id_result_pers = sqlsrv_query($conn, $max_id_pers);
@@ -200,14 +198,13 @@
                                     $sql = "INSERT INTO Concerne (Id_Personne ,Id_Reservation) values ('" . $max_id_pers . "','" . $max_id . "') ";
                                     $resultat = sqlsrv_query($conn, $sql);
                                     if ($resultat == false) {
-                                    die("<br>Echec d'execution de la requete : " . $sql);
-
+                                        die("<br>Echec d'execution de la requete : " . $sql);
                                     }
-                                }
                                 }
                             }
                         }
                     }
+                }
                 break;
 
             default:
@@ -215,7 +212,7 @@
                 echo '<br>';
                 echo '<br>';
                 echo '<br>';
-                
+
                 $sql = 'Select Circuit.Id_Circuit, Circuit.Descriptif_Circuit, Circuit.Date_Depart, Circuit.Duree_Circuit, (Nbr_Place_Totale - isnull(Place_Reserve,0)) as Nbr_Place_Restante, Circuit.Prix_Inscription
                 From Circuit left join (Select Id_Circuit, sum(Nbr_Place_Reservation) as Place_Reserve
                 from Reservation
@@ -226,51 +223,45 @@
 
                     ?>
                     <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col align-self-center">
-                                <table class="table table-striped">
-                                    <tr>
-                                        <td>Numéro du circuit</td>
-                                        <td>Nom du circuit</td>
-                                        <td>Depart</td>
-                                        <td>Durée</td>
-                                        <td>Nombre de place restante</td>
-                                        <td>Prix</td>
-                                    </tr>
 
-                            <?php
+                        <table class="table table-striped">
+                            <tr>
+                                <td>Numéro du circuit</td>
+                                <td>Nom du circuit</td>
+                                <td>Depart</td>
+                                <td>Durée</td>
+                                <td>Nombre de place restante</td>
+                                <td>Prix</td>
+                            </tr>
 
-                            while ($row = sqlsrv_fetch_array($stmt)) {
-                                $str_date = $row['Date_Depart']->format('d-m-Y');
-                                echo '<tr>';
-                                echo '<td>' . $row['Id_Circuit'] . '</td>';
-                                echo '<td>' . $row['Descriptif_Circuit'] . '</td>';
-                                echo '<td>' . $str_date . '</td>';
-                                echo '<td>' . $row['Duree_Circuit'] . '</td>';
-                                echo '<td>' . $row['Nbr_Place_Restante'] . '</td>';
-                                echo '<td>' . $row['Prix_Inscription'] . '</td>';
-                                if ($row['Nbr_Place_Restante'] == 0) {
-                                    echo "<td>plus de place disponible</td>";
-                                } else {
-                                    if (isset($_SESSION['type'])) {
-                                        echo '<td><a href=./liste_circuits.php?c=res&id=' . $row['Id_Circuit'] . '>réserver</a></td>';
-                                    }
-                                }
-                                echo '<td><a href=./detail_circuit.php?id=' . $row['Id_Circuit'] . '>Voir</a></td>';
-                            }
-                    }
-                    echo '</tr>';
-
-
-
-                            ?>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                     <?php
 
+                    while ($row = sqlsrv_fetch_array($stmt)) {
+                        $str_date = $row['Date_Depart']->format('d-m-Y');
+                        echo '<tr>';
+                        echo '<td>' . $row['Id_Circuit'] . '</td>';
+                        echo '<td>' . $row['Descriptif_Circuit'] . '</td>';
+                        echo '<td>' . $str_date . '</td>';
+                        echo '<td>' . $row['Duree_Circuit'] . '</td>';
+                        echo '<td>' . $row['Nbr_Place_Restante'] . '</td>';
+                        echo '<td>' . $row['Prix_Inscription'] . '</td>';
+                        if ($row['Nbr_Place_Restante'] == 0) {
+                            echo "<td>plus de place disponible</td>";
+                        } else {
+                            if (isset($_SESSION['type'])) {
+                                echo '<td><a href=./liste_circuits.php?c=res&id=' . $row['Id_Circuit'] . '>réserver</a></td>';
+                            }
+                        }
+                        echo '<td><a href=./detail_circuit.php?id=' . $row['Id_Circuit'] . '>Voir</a></td>';
+                    }
+            }
+            echo '</tr>';
+
+
+
                     ?>
+                        </table>
+                    </div>
 
 
 
