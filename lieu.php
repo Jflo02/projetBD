@@ -58,7 +58,11 @@
             if ($resultat == FALSE) {
                 die("<br>Echec d'execution de la requete : " . $sql);
             } else {
+                echo "<div class=\"container\">";
+                echo "<div class=\"jumbotron\">";
                 echo "Ajout OK !";
+                echo "</div>";
+                echo "</div>";
             }
             break;
 
@@ -140,7 +144,7 @@
             //on fait un tableau avec une ligne par circuit avec ses infos
 
             ?>
-                    <table class="table table-striped">
+            <table class="table table-striped">
                 <tr>
                     <td>Nom du Lieu</td>
                     <td>Ville du Lieu</td>
