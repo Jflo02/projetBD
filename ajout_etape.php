@@ -37,7 +37,7 @@
             $stmt = sqlsrv_query($conn, $sql);
             ?>
 
-            <table border=1>
+            <table class="table table-striped">
                 <tr>
                     <td>Ordre Etape</td>
                     <td>Lieu</td>
@@ -122,7 +122,7 @@
             //on fait un tableau avec une ligne par circuit avec ses infos
 
             ?>
-            <table border=1>
+            <table class="table table-striped">
             <tr>
                 <td>Nom du Lieu</td>
                 <td>Ville du Lieu</td>

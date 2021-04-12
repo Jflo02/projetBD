@@ -9,7 +9,7 @@
 
       <div class="nav-collapse">
         <ul class="nav">
-          <li><a href="./index.php">Acceuil</a></li>
+          <li><a href="./index.php">Accueil</a></li>
           <li><a href="./liste_circuits.php?c=default">Circuits</a></li>
 
           
