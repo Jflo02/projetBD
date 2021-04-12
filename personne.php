@@ -57,8 +57,6 @@
                                 <label for="DN">Date de naissance :</label>
                                 <input type="date" id="DN_pers" name="DN_pers" value="<?php echo $str_date ?>"><br><br>
 
-                                <label for="mail">Mot de passe :</label>
-                                <input type="text" id="mdp_pers" name="mdp_pers" value="<?php echo $row['Personne_MDP'] ?>"><br><br>
                                 <input type="hidden" name="id_pers" value="<?php echo $row['Id_Personne'] ?>">
                                 <input type="hidden" name="c" value="edit">
 
@@ -76,7 +74,7 @@
                             die("Il manque une valeur pour " . $key);
                         }
                     }
-                    $sql = "UPDATE Personne SET Nom='" . $_GET['nom_pers'] . "', Date_Naissance='" . $_GET['DN_pers'] . "', Prenom='" . $_GET['prenom_pers'] . "',Personne_Mail='" . $_GET['mail_pers'] . "',Personne_MDP='" . $_GET['mdp_pers'] . "' where Id_Personne=" . $_GET['id_pers'];
+                    $sql = "UPDATE Personne SET Nom='" . $_GET['nom_pers'] . "', Date_Naissance='" . $_GET['DN_pers'] . "', Prenom='" . $_GET['prenom_pers'] . "',Personne_Mail='" . $_GET['mail_pers'] . "' where Id_Personne=" . $_GET['id_pers'];
                     $stmt = sqlsrv_query($conn, $sql);
                     if ($stmt == FALSE) {
                         die("<br>Echec d'execution de la requete : " . $sql);
@@ -120,8 +118,7 @@
                             <td>Id de la personne</td>
                             <td>Nom</td>
                             <td>Prenom</td>
-                            <td>DN</td>
-                            <td>MDP</td>
+                            <td>Date de naissance</td>
                             <td>Mail</td>
                         </tr>
 
@@ -135,7 +132,6 @@
 
                             echo '<td>' . $row['Prenom'] . '</td>';
                             echo '<td>' . $str_date . '</td>';
-                            echo '<td>' . $row['Personne_MDP'] . '</td>';
                             echo '<td>' . $row['Personne_Mail'] . '</td>';
 
 
