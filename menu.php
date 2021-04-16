@@ -32,6 +32,7 @@
                   <li><a href="./personne.php?c=default">Personnes</a></li>
                   <li><a href="./administrateur.php?c=default">Administrateurs</a></li>
                   <li><a href="./client.php?c=default">Clients</a></li>
+                  <li><a href="./passager.php?c=default">Passagers</a></li>
                   <li><a href="./lieu.php?c=default">Lieux</a></li>
 
 
