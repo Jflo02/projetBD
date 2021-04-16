@@ -137,18 +137,30 @@
                     $max_id = $max_id[0] + 1;
 
 
-                    $sql = "INSERT INTO Personne (Id_Personne, Nom, Prenom, Date_Naissance, Personne_Mail, Personne_MDP) values ('" . $max_id . "','" . $_GET['nom_pers'] . "','" . $_GET['prenom_pers'] . "','" . $_GET['DN_pers'] . "','" . $_GET['mail_pers'] . "','" . $_GET['mdp_pers'] . "')";
+                    $sql = "SELECT * FROM Personne where Personne_Mail='" . $_GET['mail_pers'] . "'";
+                    echo $sql;
                     $resultat = sqlsrv_query($conn, $sql);
-                    if ($resultat == FALSE) {
+                    if ($resultat == false) {
                         die("<br>Echec d'execution de la requete : " . $sql);
                     } else {
-                        echo "Ajout OK !";
-                        $sql = "INSERT INTO Passager (Id_Personne) values ('" . $max_id . "')";
-                        $resultat = sqlsrv_query($conn, $sql);
-                        if ($resultat == FALSE) {
-                            die("<br>Echec d'execution de la requete : " . $sql);
-                        }
+                            if (sqlsrv_has_rows($resultat) == 1) {
+                            $row = sqlsrv_fetch_array($resultat);
+                
+                                $sql = "INSERT INTO Passager (Id_Personne) values ('" . $row['Id_Personne'] . "')";
+                                echo $sql;
+                                $resultat = sqlsrv_query($conn, $sql);
+
+                            } else {
+                                $sql = "INSERT INTO Personne (Id_Personne, Nom, Prenom, Date_Naissance, Personne_Mail, Personne_MDP) values ('" . $max_id . "','" . $_GET['nom_pers'] . "','" . $_GET['prenom_pers'] . "','" . $_GET['DN_pers'] . "','" . $_GET['mail_pers'] . "','" . $_GET['mdp_pers'] . "')";
+                                $resultat = sqlsrv_query($conn, $sql);
+                                echo $sql;
+                                echo "Ajout OK !";
+                                $sql = "INSERT INTO Passager (Id_Personne) values ('" . $max_id . "')";
+                                $resultat = sqlsrv_query($conn, $sql);
+                                echo $sql;
+                            }
                     }
+                    
                     break;
 
 
