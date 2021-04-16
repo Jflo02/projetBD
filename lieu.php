@@ -115,6 +115,7 @@
             break;
 
         case "del": //supprime un enregistrement
+            echo '<div class="container"><div class="jumbotron">';
             $sql = 'SELECT * from etape where \'' . $_GET['ville'] . '\' = etape.ville_lieu and \'' . $_GET['pays'] . '\' = etape.pays_lieu and \'' . $_GET['nom'] . '\' =Etape.Nom_Lieu';
             $resultat = sqlsrv_query($conn, $sql);
             if ($resultat == FALSE) {
@@ -124,8 +125,8 @@
                     $row = sqlsrv_has_rows($resultat);
                     if ($row === TRUE) {
                         $row = sqlsrv_fetch_array($resultat);
-                        echo "Non le lieu est encore dans le circuit" . $row['Id_Circuit'];
-                        echo '<a href=./detail_circuit.php?id=' . $row['Id_Circuit'] . '>Vous pouvez aller dans le détail de ce circuit pour le supprimer</a>';
+                        echo "Non le lieu est encore dans le circuit " . $row['Id_Circuit'];
+                        echo '<a href=./detail_circuit.php?id=' . $row['Id_Circuit'] . '><br><br>Vous pouvez aller dans le détail de ce circuit pour le supprimer</a>';
                     } else {
                         $sql = "DELETE FROM Lieu where Nom_Lieu='" . $_GET['nom'] . "' and Ville_Lieu='" . $_GET['ville'] . "' and Pays_Lieu='" . $_GET['pays'] . "'";
                         $resultat = sqlsrv_query($conn, $sql);
@@ -133,7 +134,7 @@
                     }
                 }
             }
-
+            echo '</div></div>';
             break;
 
 
