@@ -208,7 +208,9 @@
                 break;
 
             default:
+                echo '<div class="container-fluid">';
                 include("./recherche.php");
+                echo '</div>';
                 echo '<br>';
                 echo '<br>';
                 echo '<br>';

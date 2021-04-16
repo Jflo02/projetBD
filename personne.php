@@ -95,7 +95,8 @@
 
 
                     if ($stmt == FALSE) {
-                        die("<br>Echec d'execution de la requete , merci de supprimer la personne des clients et/ou administrateurs en premier. ");
+                        
+                        die("<br><div class=\"container\"><div class=\"jumbotron\">Echec d'execution de la requete , merci de supprimer la personne des clients et/ou administrateurs en premier. </div></div>");
                     } else {
                         echo "Personne supprimé";
                     }
