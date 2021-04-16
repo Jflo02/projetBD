@@ -14,7 +14,7 @@
     //ici on se connecte a la base sql
     include("../connection_database.php");
 
-
+    include('./session.php');
     //on met l'en-tete
     include("./en-tete.php");
     include("./menu.php");

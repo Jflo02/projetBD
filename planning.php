@@ -16,7 +16,7 @@
     //ici on se connecte a la base sql
     include("../connection_database.php");
 
-
+    include('./session.php');
     //on met l'en-tete
     include("./en-tete.php");
     include("./menu.php");
@@ -122,7 +122,7 @@
                             echo '</tr>';
                             echo '</table>';
                         } else {
-                            echo 'Vous n\'avez pas de circuits prévus';
+                            echo '<div class="container jumbotron">Vous n\'avez pas de circuits prévus</div>';
                         }
                         ?>
 

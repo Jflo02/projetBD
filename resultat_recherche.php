@@ -15,6 +15,7 @@
 
 
     //on met l'en-tete
+    include('./session.php');
     include("./en-tete.php");
     include("./menu.php");
     include("./recherche.php");

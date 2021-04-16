@@ -11,11 +11,12 @@
     include("../connection_database.php");
 
     //on met l'en-tete
+    include('./session.php');
     include("./en-tete.php");
     include("./menu.php");
 
 
-    
+
 
     if (!isset($_GET['c'])) {
         die();
@@ -56,7 +57,7 @@
                         $resultat = sqlsrv_query($conn, $sql);
 
                         if (sqlsrv_has_rows($resultat)) {
-                            
+
                             //la pers est cliente mais pas passager -> juste mail déja utilisé
                             echo '<div class="jumbotron">Cet email est déja utilisé par un client</div>';
                         }
@@ -79,7 +80,7 @@
 
                             if ($resultat) {
                                 echo 'Vous avez bien été promu client, vous pouvez maintenant vous connecter et réserver des voyages';
-                            } else{
+                            } else {
                                 echo 'erreur lalalala';
                                 print_r($resultat);
                             }
@@ -119,8 +120,10 @@
 
             if ($has_rows) {
                 $row = sqlsrv_fetch_array($stmt);
+                echo '<div class="container jumbotron">';
                 echo 'Cet email est déja présent dans la base<br><br>';
                 echo 'Voulez vous promouvoir ' . $row['Nom'] . ' ' . $row['Prenom'] . ' en administrateur?<br><br>';
+
 
     ?>
                 <form action="./Creation_De_Compte.php" method="get">
@@ -134,7 +137,7 @@
                 <a href="./index.php">Non retourner à l'acceuil</a>
 
             <?php
-
+                echo '</div>';
             } else {
                 //si la personne n'est pas ds la base:
 
@@ -170,7 +173,7 @@
                 ('" . $_GET['id'] . "')";
             $resultat = sqlsrv_query($conn, $sql);
 
-            echo 'La personne a bien été promu administrateur';
+            echo '<div class="container jumbotron">La personne a bien été promu administrateur</div>';
 
 
             break;
@@ -191,7 +194,7 @@
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="mdp_pers" name="mdp_pers" minlength="8" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"><br><br>
                 <p>8 caractères d'au moins un chiffre et une lettre majuscule et minuscule</p>
-                
+
                 <label for="Personne_Mail">Mail:</label>
                 <input type="text" id="mail_pers" name="mail_pers" required="required"><br><br>
 

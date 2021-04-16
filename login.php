@@ -1,3 +1,59 @@
+<?php
+include('./session.php');
+$erreur_login = FALSE;
+
+if (isset($_POST['mdp_user'])) {
+    //ici on se connecte a la base sql
+    include("../connection_database.php");
+
+
+
+    //--------------
+    $sql = 'SELECT * from Personne where Personne_Mail=\'' . $_POST["mail_user"] . '\' and Personne_MDP=\'' . $_POST["mdp_user"] . '\'';
+    $resultat = sqlsrv_query($conn, $sql);
+    //----------------------
+    if ($resultat == FALSE) {
+        die("<br>Echec d'execution de la requete : " . $sql);
+    } else {
+
+
+        if (sqlsrv_has_rows($resultat) == 1) {
+
+            $row = sqlsrv_fetch_array($resultat);
+            $_SESSION['id_user'] = $row['Id_Personne'];
+            $_SESSION['nom_user'] = $row['Nom'];
+            $_SESSION['prenom_user'] = $row['Prenom'];
+
+            //on regarde si la personne est administrateur
+            $sql = 'SELECT * FROM Administrateur where Id_Personne =' . $_SESSION['id_user'];
+            $stmt = sqlsrv_query($conn, $sql);
+            $is_lignes = sqlsrv_has_rows($stmt);
+            if ($stmt) { //si la requete est bien effectué
+                if ($is_lignes) { //si id_personne est ds administrateur
+                    $_SESSION['type'] = "Administrateur";
+                } else {
+                    $_SESSION['type'] = "Client";
+                }
+            }
+
+            $url = $_SERVER['HTTP_REFERER'];
+            $tableau = explode("/", $url, -1);
+            $location = "";
+            foreach ($tableau as $valeur) {
+                $location = $location . $valeur . "/";
+            }
+            $location = $location . 'index.php';
+            header("Location: $location");
+            exit();
+        } else {
+
+
+            $erreur_login = TRUE;
+        }
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -20,7 +76,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-            
+
                 <?php
 
 
@@ -79,7 +135,7 @@
                         <input type="text" id="mail_user" name="mail_user"><br><br>
                         <label for="password">Mot de passe :</label>
                         <input type="password" id="mdp_user" name="mdp_user"><br><br>
-                        <input type="submit" value="Envoyer">
+                        <input type="submit" value="Se connecter">
 
                     </form>
 
