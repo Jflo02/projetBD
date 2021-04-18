@@ -35,14 +35,14 @@
                             From Circuit left join (Select Id_Circuit, sum(Nbr_Place_Reservation) as Place_Reserve
                                                     from Reservation
                                                     group by Id_Circuit) as tab on Circuit.Id_Circuit = tab.Id_Circuit) as tab2
-            WHERE tab2.Date_Depart>='". $_GET['date_debut']."' and tab2.Date_Fin <='". $_GET['date_fin']."' and tab2.Nbr_Place_Restante >= ". $_GET['nombre_passa']." and tab2.Duree_Circuit <= ". $_GET['jours']." and tab2.Prix_Inscription <= ". $_GET['prix']."";
+            WHERE tab2.Date_Depart>='". $_GET['date_debut']."' and tab2.Date_Fin <='". $_GET['date_fin']."' and tab2.Nbr_Place_Restante >= ". $_GET['nombre_passa']." and tab2.Duree_Circuit <= ". $_GET['jours']." and tab2.Prix_Inscription <= ". $_GET['prix']." Order by Date_Depart";
         }else{
             $sql = "Select *
             From (Select Circuit.Prix_Inscription, Circuit.Id_Circuit, Circuit.Descriptif_Circuit, Circuit.Date_Depart, Circuit.Duree_Circuit, (Nbr_Place_Totale - isnull(Place_Reserve,0)) as Nbr_Place_Restante
                             From Circuit left join (Select Id_Circuit, sum(Nbr_Place_Reservation) as Place_Reserve
                                                     from Reservation
                                                     group by Id_Circuit) as tab on Circuit.Id_Circuit = tab.Id_Circuit) as tab2
-            WHERE tab2.Date_Depart>='". $_GET['date_debut']."' and tab2.Nbr_Place_Restante >= ". $_GET['nombre_passa']." and tab2.Duree_Circuit <= ". $_GET['jours']." and tab2.Prix_Inscription <= ". $_GET['prix'].""; 
+            WHERE tab2.Date_Depart>='". $_GET['date_debut']."' and tab2.Nbr_Place_Restante >= ". $_GET['nombre_passa']." and tab2.Duree_Circuit <= ". $_GET['jours']." and tab2.Prix_Inscription <= ". $_GET['prix']." Order by Date_Depart"; 
         }
 
             $stmt = sqlsrv_query($conn, $sql);
@@ -50,6 +50,11 @@
             echo "Votre recherche ne donne aucun résultat";
         }else{    
         //on fait un tableau avec une ligne par circuit avec ses infos 
+        if (isset($_SESSION['type'])) {
+            if ($_SESSION['type'] == "Administrateur") {
+                echo "<a href=./ajout_circuit.php?c=def>ajouter un circuit</a>";
+            }
+        }
         ?>
         <div class="container">
             <div class="row align-items-center">
@@ -65,9 +70,10 @@
                         </tr>
 
                 <?php
-
+                $today = date("Y-m-d");
                 while ($row = sqlsrv_fetch_array($stmt)) {
                     $str_date = $row['Date_Depart']->format('d-m-Y');
+                    $str_date2 = $row['Date_Depart']->format('Y-m-d');
                     echo '<tr>';
                     echo '<td>' . $row['Id_Circuit'] . '</td>';
                     echo '<td>' . $row['Descriptif_Circuit'] . '</td>';
@@ -79,10 +85,15 @@
                         echo "<td>plus de place disponible</td>";
                     } else {
                         if (isset($_SESSION['type'])) {
-                            echo '<td><a href=./liste_circuits.php?c=res&id=' . $row['Id_Circuit'] . '>réserver</a></td>';
+                            if ($str_date2 > $today){
+                                echo '<td><a href=./liste_circuits.php?c=res&id=' . $row['Id_Circuit'] . '>réserver</a></td>';
+                            }else{
+                                echo '<td>Voyage passé</td>';
+                            }
                         }
                     }
                     echo '<td><a href=./detail_circuit.php?id=' . $row['Id_Circuit'] . '>Voir</a></td>';
+                    echo '<td><a href=./supprimer_circuit.php?id=' . $row['Id_Circuit'] . '>Supprimer</a></td>';
                 }
                 
                 echo '</tr>';

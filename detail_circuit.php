@@ -60,9 +60,28 @@
         </table>
 
         <?php
+        $sql='Select * From Etape WHERE Id_Circuit =' . $_GET['id'];
+        $stmt = sqlsrv_query($conn, $sql);
+        if (sqlsrv_has_rows ($stmt)){
+            $sql = 'Select *
+            From (Select Circuit.Id_Circuit, Circuit.Prix_Inscription, tab.PrixVisites, Circuit.Prix_Inscription+PrixVisites as PrixTotal
+            from Circuit,  (Select Etape.Id_Circuit as Id, SUM(Lieu.Prix_Visite) as PrixVisites
+                            From Lieu inner join Etape on Lieu.Nom_Lieu = Etape.Nom_Lieu and Lieu.Ville_Lieu = Etape.Ville_Lieu and Lieu.Pays_Lieu= Etape.Pays_Lieu
+                            Group by Etape.Id_Circuit) as tab
+            Where Circuit.Id_Circuit = tab.Id) as sousreq
+            Where Id_circuit=' . $_GET['id'];
+            $resultat = sqlsrv_query($conn, $sql);
+            if ($resultat == FALSE) {
+                die("<br>Echec d'execution de la requete : " . $sql);
+            } else {
+                $row = sqlsrv_fetch_array($resultat);
+                echo "Prix d'inscription : " . $row['Prix_Inscription'] . " euros. Prix visites : " . $row['PrixVisites'] . " euros. Pour un cout total de : " . $row['PrixTotal'] . " euros<br><br>";
+            }
+        }
         if (isset($_SESSION['type'])) {
             if ($_SESSION['type'] == "Administrateur") {
                 echo '<a href=./ajout_etape.php?c=defaut&id_circuit=' . $_GET['id'] . '>Ajouter une étape</a><br><br>';
+                echo '<a href=./modif_circuit.php?id=' . $_GET['id'] . '&c=read>Modifier le circuit</a><br><br>';
             }
         }
         ?>

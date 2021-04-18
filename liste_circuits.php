@@ -218,10 +218,19 @@
                 $sql = 'Select Circuit.Id_Circuit, Circuit.Descriptif_Circuit, Circuit.Date_Depart, Circuit.Duree_Circuit, (Nbr_Place_Totale - isnull(Place_Reserve,0)) as Nbr_Place_Restante, Circuit.Prix_Inscription
                 From Circuit left join (Select Id_Circuit, sum(Nbr_Place_Reservation) as Place_Reserve
                 from Reservation
-                group by Id_Circuit) as tab on Circuit.Id_Circuit = tab.Id_Circuit';
+                group by Id_Circuit) as tab on Circuit.Id_Circuit = tab.Id_Circuit
+                WHERE Circuit.Date_Depart > CURRENT_TIMESTAMP
+                Order by Date_Depart';
                 $stmt = sqlsrv_query($conn, $sql);
 
                 //on fait un tableau avec une ligne par circuit avec ses infos
+
+                if (isset($_SESSION['type'])) {
+                    if ($_SESSION['type'] == "Administrateur") {
+                        echo "<a href=./ajout_circuit.php?c=def>ajouter un circuit</a>";
+                    }
+                }
+                
 
                     ?>
                     <div class="container">
@@ -233,13 +242,14 @@
                                 <td>Depart</td>
                                 <td>Durée</td>
                                 <td>Nombre de place restante</td>
-                                <td>Prix</td>
+                                <td>Prix d'inscription</td>
                             </tr>
 
                     <?php
-
+                    $today = date("Y-m-d");
                     while ($row = sqlsrv_fetch_array($stmt)) {
                         $str_date = $row['Date_Depart']->format('d-m-Y');
+                        $str_date2 = $row['Date_Depart']->format('Y-m-d');
                         echo '<tr>';
                         echo '<td>' . $row['Id_Circuit'] . '</td>';
                         echo '<td>' . $row['Descriptif_Circuit'] . '</td>';
@@ -247,19 +257,24 @@
                         echo '<td>' . $row['Duree_Circuit'] . '</td>';
                         echo '<td>' . $row['Nbr_Place_Restante'] . '</td>';
                         echo '<td>' . $row['Prix_Inscription'] . '</td>';
+
                         if ($row['Nbr_Place_Restante'] == 0) {
-                            echo "<td>plus de place disponible</td>";
-                        } else {
-                            if (isset($_SESSION['type'])) {
+                        echo "<td>plus de place disponible</td>";
+                    } else {
+                        if (isset($_SESSION['type'])) {
+                            if ($str_date2 > $today){
                                 echo '<td><a href=./liste_circuits.php?c=res&id=' . $row['Id_Circuit'] . '>réserver</a></td>';
+                            }else{
+                                echo '<td>Voyage passé</td>';
                             }
                         }
-                        echo '<td><a href=./detail_circuit.php?id=' . $row['Id_Circuit'] . '>Voir</a></td>';
                     }
+                    echo '<td><a href=./detail_circuit.php?id=' . $row['Id_Circuit'] . '>Voir</a></td>';
+                    echo '<td><a href=./supprimer_circuit.php?id=' . $row['Id_Circuit'] . '>Supprimer</a></td>';
+                }
+                
+                echo '</tr>';
             }
-            echo '</tr>';
-
-
 
                     ?>
                         </table>
