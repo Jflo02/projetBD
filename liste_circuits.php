@@ -270,7 +270,11 @@
                         }
                     }
                     echo '<td><a href=./detail_circuit.php?id=' . $row['Id_Circuit'] . '>Voir</a></td>';
-                    echo '<td><a href=./supprimer_circuit.php?id=' . $row['Id_Circuit'] . '>Supprimer</a></td>';
+                    if (isset($_SESSION['type'])) {
+                        if ($_SESSION['type'] == "Administrateur") {
+                            echo '<td><a href=./supprimer_circuit.php?id=' . $row['Id_Circuit'] . '>Supprimer</a></td>';
+                        }
+                        }
                 }
                 
                 echo '</tr>';
